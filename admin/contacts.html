@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin • Kontak Admin</title>
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../assets/css/main.css" rel="stylesheet" />
+  <style>
+    .table thead th {
+      white-space: nowrap
+    }
+
+    .text-mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace
+    }
+  </style>
+</head>
+
+<body class="index-page">
+  <header class="header d-flex align-items-center fixed-top" id="header">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <a class="logo d-flex align-items-center me-auto me-xl-0" href="../index.html">
+        <h1 class="sitename">CekResi</h1>
+      </a>
+      <nav class="navmenu" id="navmenu">
+        <ul></ul><i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <a class="btn-getstarted" href="../index.html#cek-resi-section">Cek Resi</a>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="section" style="padding-top:120px;">
+      <div class="container section-title">
+        <h2>Kontak Admin</h2>
+        <p>Kelola daftar kontak resmi (telepon, email, website, dll).</p>
+      </div>
+
+      <div class="container">
+        <div class="card bg-dark text-white">
+          <div class="card-body">
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+              <div class="d-flex gap-2">
+                <button id="btnAdd" class="btn btn-warning btn-sm"><i class="bi bi-plus-circle"></i> Tambah</button>
+                <button id="btnDeleteSel" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i> Hapus
+                  Terpilih</button>
+                <button id="btnRefresh" class="btn btn-outline-light btn-sm"><i class="bi bi-arrow-clockwise"></i>
+                  Refresh</button>
+              </div>
+              <div class="input-group" style="max-width:360px;">
+                <span class="input-group-text bg-dark text-white border-secondary"><i class="bi bi-search"></i></span>
+                <input id="q" class="form-control bg-dark text-white border-secondary"
+                  placeholder="Cari label / nilai…">
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-dark table-striped table-bordered align-middle">
+                <thead>
+                  <tr>
+                    <th style="width:42px"><input type="checkbox" id="selAll"></th>
+                    <th style="width:140px">Label</th>
+                    <th style="width:120px">Tipe</th>
+                    <th>Nilai</th>
+                    <th style="width:160px">Dibuat</th>
+                    <th style="width:90px">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                  <tr>
+                    <td colspan="6" class="text-center text-muted py-4">Memuat…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="listMsg" class="mt-2 small text-muted"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal Tambah/Edit -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i><span id="mTitle">Tambah Kontak</span></h5>
+          <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="mId">
+          <div class="mb-3"><label class="form-label">Label</label>
+            <input id="mLabel" class="form-control bg-dark text-white" placeholder="JNE / J&T / SiCepat…" required>
+          </div>
+          <div class="mb-3"><label class="form-label">Tipe</label>
+            <select id="mType" class="form-select bg-dark text-white">
+              <option value="phone">phone</option>
+              <option value="email">email</option>
+              <option value="website">website</option>
+              <option value="other">other</option>
+            </select>
+          </div>
+          <div class="mb-1"><label class="form-label">Nilai</label>
+            <input id="mValue" class="form-control bg-dark text-white text-mono"
+              placeholder="021-xxxx / https://… / email@…">
+          </div>
+          <div id="mMsg" class="small mt-2"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-light" data-bs-dismiss="modal">Batal</button>
+          <button id="btnSave" class="btn btn-warning"><i class="bi bi-save me-1"></i> Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/auth-ui.js?v=7"></script>
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (async function () {
+      // UBAH ini jika kamu memindahkan file API ke /admin
+      const API_PATH = '../api_admin_contacts.php';
+
+      // deteksi admin (untuk aktifkan CRUD)
+      let IS_ADMIN = false;
+      try {
+        const me = await fetch('../api_auth.php?action=me', { credentials: 'same-origin', cache: 'no-store' }).then(r => r.json());
+        IS_ADMIN = (me?.status === 200 && me.user?.role === 'admin');
+        if (!IS_ADMIN) { btnAdd.disabled = true; btnDeleteSel.disabled = true; }
+      } catch { }
+
+      const tbody = document.getElementById('tbody');
+      const q = document.getElementById('q');
+      const selAll = document.getElementById('selAll');
+      const listMsg = document.getElementById('listMsg');
+      const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+      let ALL = [];
+
+      function render() {
+        const term = (q.value || '').toLowerCase();
+        const rows = ALL.filter(r => (r.label + ' ' + r.type + ' ' + r.value).toLowerCase().includes(term));
+        if (rows.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Tidak ada data.</td></tr>`;
+          listMsg.textContent = ''; return;
+        }
+        tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td><input type="checkbox" class="sel" value="${r.id}" ${IS_ADMIN ? '' : 'disabled'}></td>
+        <td>${r.label}</td>
+        <td class="text-uppercase">${r.type}</td>
+        <td class="text-break">${r.value}</td>
+        <td class="text-nowrap">${r.created_at || ''}</td>
+        <td><button class="btn btn-sm btn-outline-info btn-edit" data-id="${r.id}" ${IS_ADMIN ? '' : 'disabled'}><i class="bi bi-pencil"></i></button></td>
+      </tr>`).join('');
+        listMsg.textContent = `${rows.length} dari ${ALL.length} kontak`;
+      }
+
+      async function load() {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Memuat…</td></tr>`;
+        try {
+          let r = await fetch(`${API_PATH}?action=list`, { credentials: 'same-origin', cache: 'no-store' });
+          if ([401, 403, 404].includes(r.status)) r = await fetch(`${API_PATH}?action=list_public`, { cache: 'no-store' });
+          ALL = await r.json(); if (!Array.isArray(ALL)) ALL = [];
+          render();
+        } catch (e) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Gagal memuat: ${e.message || ''}</td></tr>`;
+        }
+      }
+
+      // events
+      document.getElementById('btnRefresh').addEventListener('click', load);
+      q.addEventListener('input', render);
+      selAll.addEventListener('change', () => { document.querySelectorAll('.sel').forEach(c => c.checked = selAll.checked); });
+
+      // CRUD (aktif hanya admin)
+      document.getElementById('btnAdd').addEventListener('click', () => {
+        if (!IS_ADMIN) return;
+        mTitle.textContent = 'Tambah Kontak'; mId.value = ''; mLabel.value = ''; mType.value = 'phone'; mValue.value = ''; mMsg.textContent = '';
+        editModal.show();
+      });
+
+      document.getElementById('btnSave').addEventListener('click', async () => {
+        if (!IS_ADMIN) return;
+        const id = mId.value, label = mLabel.value.trim(), type = mType.value.trim(), value = mValue.value.trim();
+        if (!label || !value) { mMsg.className = 'small text-danger'; mMsg.textContent = 'Label & Nilai wajib diisi.'; return; }
+        mMsg.className = 'small text-muted'; mMsg.textContent = 'Menyimpan…';
+        try {
+          const act = id ? 'update' : 'create';
+          const d = await fetch(`${API_PATH}?action=${act}`, {
+            method: 'POST', credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, label, type, value })
+          }).then(r => r.json());
+          if (d.status === 200) { mMsg.className = 'small text-success'; mMsg.textContent = 'Tersimpan.'; editModal.hide(); load(); }
+          else { mMsg.className = 'small text-danger'; mMsg.textContent = d.message || 'Gagal menyimpan.'; }
+        } catch (e) { mMsg.className = 'small text-danger'; mMsg.textContent = e.message || 'Gagal menyimpan.'; }
+      });
+
+      document.getElementById('btnDeleteSel').addEventListener('click', async () => {
+        if (!IS_ADMIN) return;
+        const ids = Array.from(document.querySelectorAll('.sel:checked')).map(x => +x.value);
+        if (ids.length === 0) { alert('Pilih data terlebih dahulu.'); return; }
+        if (!confirm(`Hapus ${ids.length} item?`)) return;
+        try {
+          const d = await fetch(`${API_PATH}?action=delete`, {
+            method: 'POST', credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids })
+          }).then(r => r.json());
+          if (d.status === 200) load(); else alert(d.message || 'Gagal menghapus.');
+        } catch (e) { alert(e.message || 'Gagal menghapus.'); }
+      });
+
+      tbody.addEventListener('click', (e) => {
+        if (!IS_ADMIN) return;
+        const btn = e.target.closest('.btn-edit'); if (!btn) return;
+        const id = +btn.dataset.id; const row = ALL.find(x => +x.id === id); if (!row) return;
+        mTitle.textContent = 'Edit Kontak'; mId.value = row.id; mLabel.value = row.label || ''; mType.value = (row.type || 'phone').toLowerCase(); mValue.value = row.value || ''; mMsg.textContent = '';
+        editModal.show();
+      });
+
+      load();
+    })();
+  </script>
+</body>
+
+</html>

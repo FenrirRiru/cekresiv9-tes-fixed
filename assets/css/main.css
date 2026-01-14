@@ -1,0 +1,1497 @@
+/**
+* Template Name: Instant (Customized for CekResi)
+* Template URL: https://bootstrapmade.com/newtemplate-bootstrap-website-template/
+* Updated: Jun 12 2025 with Bootstrap v5.3.6
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*
+* Description: This version has been stripped of unused components for the CekResi project.
+*/
+
+/*--------------------------------------------------------------
+# Font & Color Variables
+# Help: https://bootstrapmade.com/color-system/
+--------------------------------------------------------------*/
+/* Fonts */
+:root {
+  --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --heading-font: "Raleway", sans-serif;
+  --nav-font: "Raleway", sans-serif;
+}
+
+/* Global Colors */
+:root {
+  --background-color: #040000;
+  --default-color: #f8f8f8;
+  --heading-color: #ffffff;
+  --accent-color: #e59d02;
+  --surface-color: #191919;
+  --contrast-color: #ffffff;
+}
+
+/* Nav Menu Colors */
+:root {
+  --nav-color: #f8f8f8;
+  --nav-hover-color: #e59d02;
+  --nav-mobile-background-color: #1b1a1a;
+}
+
+/* Smooth scroll */
+:root {
+  scroll-behavior: smooth;
+}
+
+/*--------------------------------------------------------------
+# General Styling & Shared Classes
+--------------------------------------------------------------*/
+body {
+  color: var(--default-color);
+  background-color: var(--background-color);
+  font-family: var(--default-font);
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: color-mix(in srgb, var(--accent-color), transparent 25%);
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--heading-color);
+  font-family: var(--heading-font);
+}
+
+/* PHP Email Form Messages */
+.formresi .sent-message {
+  display: none;
+  color: #ffffff;
+  background: #059652;
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.formresi .loading {
+  display: none;
+  background: var(--surface-color);
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 24px;
+}
+
+.formresi .loading:before {
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin: 0 10px -6px 0;
+  border: 3px solid var(--accent-color);
+  border-top-color: var(--surface-color);
+  animation: formresi-loading 1s linear infinite;
+}
+
+@keyframes formresi-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*--------------------------------------------------------------
+# Global Header
+--------------------------------------------------------------*/
+.header {
+  --background-color: rgba(255, 255, 255, 0);
+  color: var(--default-color);
+  background-color: var(--background-color);
+  padding: 15px 0;
+  transition: all 0.5s;
+  z-index: 997;
+}
+
+.header .logo {
+  line-height: 1;
+}
+
+.header .logo img {
+  max-height: 36px;
+  margin-right: 8px;
+}
+
+.header .logo h1 {
+  font-size: 30px;
+  margin: 0;
+  font-weight: 700;
+  color: var(--heading-color);
+}
+
+.header .btn-getstarted,
+.header .btn-getstarted:focus {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  font-size: 14px;
+  padding: 8px 26px;
+  margin: 0;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+.header .btn-getstarted:hover,
+.header .btn-getstarted:focus:hover {
+  color: var(--contrast-color);
+  background: color-mix(in srgb, var(--accent-color), transparent 15%);
+}
+
+@media (max-width: 1200px) {
+  .header .logo {
+    order: 1;
+  }
+
+  .header .btn-getstarted {
+    order: 2;
+    margin: 0 15px 0 0;
+    padding: 6px 20px;
+  }
+
+  .header .navmenu {
+    order: 3;
+  }
+}
+
+.scrolled .header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/*--------------------------------------------------------------
+# Navigation Menu
+--------------------------------------------------------------*/
+/* Navmenu - Desktop */
+@media (min-width: 1200px) {
+  .navmenu {
+    padding: 0;
+  }
+
+  .navmenu ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+  }
+
+  .navmenu li {
+    position: relative;
+  }
+
+  .navmenu a,
+  .navmenu a:focus {
+    color: var(--nav-color);
+    padding: 18px 15px;
+    font-size: 16px;
+    font-family: var(--nav-font);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+    transition: 0.3s;
+  }
+
+  .navmenu li:last-child a {
+    padding-right: 0;
+  }
+
+  .navmenu li:hover>a,
+  .navmenu .active,
+  .navmenu .active:focus {
+    color: var(--nav-hover-color);
+  }
+}
+
+/* Navmenu - Mobile */
+@media (max-width: 1199px) {
+  .mobile-nav-toggle {
+    color: var(--nav-color);
+    font-size: 28px;
+    line-height: 0;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .navmenu {
+    padding: 0;
+    z-index: 9997;
+  }
+
+  .navmenu ul {
+    display: none;
+    list-style: none;
+    position: absolute;
+    inset: 60px 20px 20px 20px;
+    padding: 10px 0;
+    margin: 0;
+    border-radius: 6px;
+    background-color: var(--nav-mobile-background-color);
+    overflow-y: auto;
+    transition: 0.3s;
+    z-index: 9998;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .navmenu a,
+  .navmenu a:focus {
+    color: var(--default-color);
+    /* Modified from --nav-dropdown-color */
+    padding: 10px 20px;
+    font-family: var(--nav-font);
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+    transition: 0.3s;
+  }
+
+  .navmenu a:hover,
+  .navmenu .active,
+  .navmenu .active:focus {
+    color: var(--nav-hover-color);
+    /* Modified from --nav-dropdown-hover-color */
+  }
+
+  .mobile-nav-active {
+    overflow: hidden;
+  }
+
+  .mobile-nav-active .mobile-nav-toggle {
+    color: #fff;
+    position: absolute;
+    font-size: 32px;
+    top: 15px;
+    right: 15px;
+    margin-right: 0;
+    z-index: 9999;
+  }
+
+  .mobile-nav-active .navmenu {
+    position: fixed;
+    overflow: hidden;
+    inset: 0;
+    background: rgba(33, 37, 41, 0.8);
+    transition: 0.3s;
+  }
+
+  .mobile-nav-active .navmenu>ul {
+    display: block;
+  }
+}
+
+/*--------------------------------------------------------------
+# Global Footer
+--------------------------------------------------------------*/
+.footer {
+  color: var(--default-color);
+  background-color: var(--background-color);
+  font-size: 14px;
+  position: relative;
+}
+
+.footer .copyright {
+  padding: 30px 0;
+}
+
+.footer .copyright p {
+  margin-bottom: 0;
+}
+
+.footer .social-links a {
+  font-size: 18px;
+  display: inline-block;
+  background: color-mix(in srgb, var(--default-color), transparent 92%);
+  color: var(--accent-color);
+  line-height: 1;
+  padding: 8px 0;
+  margin-right: 4px;
+  border-radius: 4px;
+  text-align: center;
+  width: 36px;
+  height: 36px;
+  transition: 0.3s;
+}
+
+.footer .social-links a:hover {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  text-decoration: none;
+}
+
+/*--------------------------------------------------------------
+# Scroll Top Button
+--------------------------------------------------------------*/
+.scroll-top {
+  position: fixed;
+  visibility: hidden;
+  opacity: 0;
+  right: 15px;
+  bottom: -15px;
+  z-index: 99999;
+  background-color: var(--accent-color);
+  width: 44px;
+  height: 44px;
+  border-radius: 50px;
+  transition: all 0.4s;
+}
+
+.scroll-top i {
+  font-size: 24px;
+  color: var(--contrast-color);
+  line-height: 0;
+}
+
+.scroll-top:hover {
+  background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+  color: var(--contrast-color);
+}
+
+.scroll-top.active {
+  visibility: visible;
+  opacity: 1;
+  bottom: 15px;
+}
+
+/*--------------------------------------------------------------
+# Disable aos animation delay on mobile devices
+--------------------------------------------------------------*/
+@media screen and (max-width: 768px) {
+  [data-aos-delay] {
+    transition-delay: 0 !important;
+  }
+}
+
+/*--------------------------------------------------------------
+# Global Sections
+--------------------------------------------------------------*/
+section,
+.section {
+  color: var(--default-color);
+  background-color: var(--background-color);
+  padding: 60px 0;
+  scroll-margin-top: 90px;
+  overflow: clip;
+}
+
+@media (max-width: 1199px) {
+
+  section,
+  .section {
+    scroll-margin-top: 66px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Global Section Titles
+--------------------------------------------------------------*/
+.section-title {
+  text-align: center;
+  padding-bottom: 60px;
+  position: relative;
+}
+
+.section-title h2 {
+  font-size: 32px;
+  font-weight: 700;
+  position: relative;
+}
+
+.section-title h2:before,
+.section-title h2:after {
+  content: "";
+  width: 50px;
+  height: 2px;
+  background: var(--accent-color);
+  display: inline-block;
+}
+
+.section-title h2:before {
+  margin: 0 15px 10px 0;
+}
+
+.section-title h2:after {
+  margin: 0 0 10px 15px;
+}
+
+.section-title p {
+  margin-bottom: 0;
+}
+
+/*--------------------------------------------------------------
+# Hero Section
+--------------------------------------------------------------*/
+.hero {
+  padding-top: 120px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color), transparent 96%) 0%, var(--background-color) 40%, color-mix(in srgb, var(--accent-color), transparent 98%) 100%);
+  padding-bottom: 60px;
+}
+
+.hero .hero-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero .hero-title {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--heading-color);
+  line-height: 1.1;
+  margin-bottom: 25px;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+  .hero .hero-title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 575px) {
+  .hero .hero-title {
+    font-size: 28px;
+  }
+}
+
+.hero .hero-title .typed {
+  background: linear-gradient(135deg, var(--accent-color) 0%, color-mix(in srgb, var(--accent-color), #8b5cf6 50%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.hero .hero-description {
+  font-size: 1.2rem;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero .hero-image-showcase {
+  position: relative;
+}
+
+.hero .hero-image-showcase .image-wrapper {
+  position: relative;
+  background: var(--surface-color);
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color), transparent 88%);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+}
+
+.hero .hero-image-showcase .image-wrapper img {
+  border-radius: 15px;
+  width: 100%;
+  height: auto;
+}
+
+.hero .hero-image-showcase .floating-card {
+  position: absolute;
+  background: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 30px color-mix(in srgb, var(--default-color), transparent 85%);
+  backdrop-filter: blur(10px);
+}
+
+.hero .hero-image-showcase .floating-card.card-1 {
+  top: 20%;
+  left: -60px;
+}
+
+.hero .hero-image-showcase .floating-card.card-2 {
+  bottom: 15%;
+  right: -60px;
+}
+
+.hero .hero-image-showcase .floating-card .card-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.hero .hero-image-showcase .floating-card .card-content .card-icon {
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero .hero-image-showcase .floating-card .card-content .card-icon i {
+  color: var(--accent-color);
+  font-size: 20px;
+}
+
+.hero .hero-image-showcase .floating-card .card-content .card-info h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  margin: 0;
+  line-height: 1;
+}
+
+.hero .hero-image-showcase .floating-card .card-content .card-info p {
+  margin: 5px 0 0;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 991px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .hero .floating-card.card-1 {
+    left: -30px;
+    top: 10%;
+  }
+
+  .hero .floating-card.card-2 {
+    right: -30px;
+    bottom: 10%;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero .floating-card {
+    display: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero {
+    padding: 100px 0 30px;
+  }
+
+  .hero .hero-description {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Services Section
+--------------------------------------------------------------*/
+.services {
+  padding: 80px 0;
+}
+
+.services .intro-content .section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+  color: var(--accent-color);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.services .intro-content .section-badge i {
+  font-size: 12px;
+}
+
+.services .intro-content .section-heading {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--heading-color);
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .services .intro-content .section-heading {
+    font-size: 2.2rem;
+  }
+}
+
+.services .intro-content .section-description {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  margin-bottom: 2rem;
+}
+
+.services .intro-content .cta-button {
+  display: inline-block;
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  padding: 15px 35px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+.services .intro-content .cta-button:hover {
+  background: color-mix(in srgb, var(--accent-color), black 10%);
+  color: var(--contrast-color);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px color-mix(in srgb, var(--accent-color), transparent 60%);
+}
+
+.services .hero-visual {
+  position: relative;
+}
+
+.services .hero-visual img {
+  border-radius: 20px;
+  box-shadow: 0 20px 60px color-mix(in srgb, var(--default-color), transparent 85%);
+}
+
+@media (max-width: 991px) {
+  .services .hero-visual {
+    margin-top: 3rem;
+  }
+}
+
+.services .services-grid .service-card {
+  background: var(--surface-color);
+  padding: 2rem;
+  border-radius: 15px;
+  height: 100%;
+  transition: all 0.3s ease;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  position: relative;
+  overflow: hidden;
+}
+
+.services .services-grid .service-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--accent-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.services .services-grid .service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px color-mix(in srgb, var(--default-color), transparent 80%);
+}
+
+.services .services-grid .service-card:hover::before {
+  transform: scaleX(1);
+}
+
+.services .services-grid .service-card:hover .card-number span {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+.services .services-grid .service-card .card-number {
+  margin-bottom: 1.5rem;
+}
+
+.services .services-grid .service-card .card-number span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: color-mix(in srgb, var(--accent-color), transparent 90%);
+  color: var(--accent-color);
+  border-radius: 15px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.services .services-grid .service-card .card-content .service-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.services .services-grid .service-card .card-content .service-title a {
+  color: var(--heading-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.services .services-grid .service-card .card-content .service-title a:hover {
+  color: var(--accent-color);
+}
+
+.services .services-grid .service-card .card-content .service-description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .services {
+    padding: 60px 0;
+  }
+
+  .services .intro-content {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .services .services-grid .service-card {
+    padding: 1.5rem;
+  }
+}
+
+/*--------------------------------------------------------------
+# Testimonials Section
+--------------------------------------------------------------*/
+.testimonials {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials .testimonial-slider {
+  position: relative;
+  padding-bottom: 50px;
+}
+
+.testimonials .testimonial-slider .swiper-wrapper {
+  height: auto !important;
+}
+
+.testimonials .testimonial-item {
+  background: linear-gradient(135deg, var(--surface-color) 0%, color-mix(in srgb, var(--surface-color), var(--accent-color) 2%) 100%);
+  border-radius: 20px;
+  padding: 0;
+  height: 100%;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  transition: all 0.4s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.testimonials .testimonial-item:hover .quote-icon {
+  color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+.testimonials .testimonial-header {
+  position: relative;
+  text-align: center;
+  padding: 30px 30px 20px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-color), var(--accent-color) 3%) 0%, var(--surface-color) 100%);
+}
+
+.testimonials .testimonial-header img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid color-mix(in srgb, var(--accent-color), transparent 70%);
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.testimonials .testimonial-header .rating {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+
+.testimonials .testimonial-header .rating i {
+  color: #ffc107;
+  font-size: 0.9rem;
+}
+
+.testimonials .testimonial-body {
+  padding: 0 30px 20px;
+}
+
+.testimonials .testimonial-body p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+  position: relative;
+}
+
+.testimonials .testimonial-footer {
+  padding: 20px 30px 30px;
+  text-align: center;
+  position: relative;
+}
+
+.testimonials .testimonial-footer h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin: 0 0 5px;
+}
+
+.testimonials .testimonial-footer span {
+  font-size: 0.85rem;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  display: block;
+  margin-bottom: 15px;
+}
+
+.testimonials .testimonial-footer .quote-icon {
+  position: absolute;
+  bottom: 15px;
+  right: 25px;
+  color: color-mix(in srgb, var(--accent-color), transparent 60%);
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.testimonials .swiper-navigation {
+  position: relative;
+  margin-top: 25px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.testimonials .swiper-button-prev,
+.testimonials .swiper-button-next {
+  position: static;
+  width: 45px;
+  height: 45px;
+  margin: 0 10px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  color: var(--contrast-color);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.testimonials .swiper-button-prev:hover,
+.testimonials .swiper-button-next:hover {
+  background: color-mix(in srgb, var(--accent-color), var(--heading-color) 20%);
+  transform: scale(1.05);
+}
+
+.testimonials .swiper-button-prev::after,
+.testimonials .swiper-button-next::after {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/*--------------------------------------------------------------
+# Result Display Section (Derived from Faq Section)
+# Used to show tracking results.
+--------------------------------------------------------------*/
+.faq .faq-item {
+  position: relative;
+  margin-bottom: 25px;
+  padding: 30px;
+  background-color: var(--surface-color);
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+.faq .faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq .faq-item h3 {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+  padding-right: 40px;
+  margin-bottom: 0;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .faq .faq-item {
+    padding: 20px;
+  }
+
+  .faq .faq-item h3 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Resi Section
+--------------------------------------------------------------*/
+#cek-resi-section .resi-form-wrapper {
+  background: linear-gradient(135deg, var(--surface-color), color-mix(in srgb, var(--surface-color), var(--background-color) 50%));
+  padding: 40px;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px color-mix(in srgb, var(--default-color), transparent 90%);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+#cek-resi-section .resi-form-wrapper .form-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+#cek-resi-section .resi-form-wrapper .form-header h3 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: var(--heading-color);
+}
+
+#cek-resi-section .resi-form-wrapper .form-header p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--default-color);
+  margin-bottom: 0;
+}
+
+#cek-resi-section .resi-form-wrapper .formresi .form-label {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+#cek-resi-section .resi-form-wrapper .formresi .form-control,
+#cek-resi-section .resi-form-wrapper .formresi .form-select {
+  height: 50px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  background-color: var(--surface-color);
+  color: var(--default-color);
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+#cek-resi-section .resi-form-wrapper .formresi .form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23f8f8f8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px 12px;
+}
+
+#cek-resi-section .resi-form-wrapper .formresi .form-control:focus,
+#cek-resi-section .resi-form-wrapper .formresi .form-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 85%);
+  background-color: var(--surface-color);
+  outline: none;
+  color: var(--default-color);
+}
+
+#cek-resi-section .resi-form-wrapper .formresi .form-control::placeholder {
+  color: color-mix(in srgb, var(--default-color), transparent 60%);
+}
+
+#cek-resi-section .resi-form-wrapper .formresi .submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color), #000 20%));
+  color: var(--contrast-color);
+  border: none;
+  padding: 18px 30px;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+#cek-resi-section .resi-form-wrapper .formresi .submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+#cek-resi-section .resi-form-wrapper .formresi .submit-btn:hover i {
+  transform: translateX(5px);
+}
+
+#cek-resi-section .resi-form-wrapper .formresi .submit-btn span,
+#cek-resi-section .resi-form-wrapper .formresi .submit-btn i {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  #cek-resi-section .resi-form-wrapper {
+    padding: 30px 25px;
+  }
+
+  #cek-resi-section .resi-form-wrapper .form-header h3 {
+    font-size: 24px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Custom Table Template Styling
+--------------------------------------------------------------*/
+/* Tinggi minimum halaman untuk latar dan posisi */
+html,
+body,
+.intro {
+  height: 100%;
+}
+
+.intro .mask {
+  min-height: 100vh;
+}
+
+/* Tabel umum */
+table {
+  background-color: #212529;
+  /* Warna gelap */
+  color: #fff;
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Header tabel (thead) */
+thead {
+  background-color: #343a40;
+  color: #fff;
+}
+
+/* Border & padding cell */
+table td,
+table th {
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  vertical-align: middle;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Isi tabel */
+tbody td {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: left;
+  white-space: normal;
+}
+
+/* Judul tabel / judul card */
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Card */
+.card {
+  border-radius: 0.5rem;
+  background-color: #212529;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Striping tabel */
+.table-striped tbody tr:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+
+/* Responsive breakpoint */
+@media (max-width: 768px) {
+  tbody th {
+    width: 40%;
+  }
+}
+
+@media (max-width: 576px) {
+  table {
+    display: block;
+    width: 100%;
+  }
+
+  tbody th,
+  tbody td {
+    display: block;
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+    padding: 0.5rem;
+  }
+
+  tbody th {
+    margin-top: 1rem;
+    padding-bottom: 0;
+  }
+
+  tbody td {
+    margin-bottom: 0.5rem;
+    padding-top: 0.25rem;
+  }
+}
+
+/* ==== Reuse skin form untuk Cek Resi & Hubungi Admin ==== */
+/* Letakkan SETELAH blok #cek-resi-section agar berlaku juga di #hubungi-admin */
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper {
+  background: linear-gradient(135deg, var(--surface-color),
+      color-mix(in srgb, var(--surface-color), var(--background-color) 50%));
+  padding: 40px;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px color-mix(in srgb, var(--default-color), transparent 90%);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .form-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .form-header h3 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: var(--heading-color);
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .form-header p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--default-color);
+  margin-bottom: 0;
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .form-label {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .form-control,
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .form-select {
+  height: 50px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  background-color: var(--surface-color);
+  color: var(--default-color);
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23f8f8f8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 16px 12px;
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .form-control:focus,
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .form-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 85%);
+  background-color: var(--surface-color);
+  outline: none;
+  color: var(--default-color);
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .form-control::placeholder {
+  color: color-mix(in srgb, var(--default-color), transparent 60%);
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent-color),
+      color-mix(in srgb, var(--accent-color), #000 20%));
+  color: var(--contrast-color);
+  border: none;
+  padding: 18px 30px;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+:where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .formresi .submit-btn:hover i {
+  transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+  :where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper {
+    padding: 30px 25px;
+  }
+
+  :where(#cek-resi-section, #hubungi-admin) .resi-form-wrapper .form-header h3 {
+    font-size: 24px;
+  }
+}
+
+/* Tambahan kecil untuk textarea Hubungi Admin */
+#hubungi-admin .formresi textarea.form-control {
+  height: auto;
+  min-height: 140px;
+  resize: vertical;
+}
+
+/* Styling daftar "Pesan Saya" (scoped) */
+#myMessages .list-group-item,
+#myMessages .list-group-item.bg-dark {
+  background-color: var(--surface-color) !important;
+  color: var(--default-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+  border-radius: 14px;
+  margin-bottom: 12px;
+}
+
+#myMessages .msg-text {
+  margin-top: .35rem;
+  line-height: 1.6;
+}
+
+#myMessages .text-muted {
+  color: color-mix(in srgb, var(--default-color), transparent 55%) !important;
+}
+
+#myMessages .btn-outline-warning {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+#myMessages .btn-outline-warning:hover {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+/* Kotak balasan admin agar lebih serasi */
+#myMessages .bg-secondary {
+  background: color-mix(in srgb, var(--surface-color), var(--accent-color) 12%);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  color: color-mix(in srgb, var(--default-color), transparent 8%);
+}
+
+/* Spasi atas KHUSUS halaman contact */
+body.contact-page .section:first-of-type {
+  padding-top: 120px;
+}
+
+/* =================== KRITIK & SARAN (match Cek Resi) =================== */
+#kritik-saran-section .resi-form-wrapper {
+  background: linear-gradient(135deg, var(--surface-color),
+      color-mix(in srgb, var(--surface-color), var(--background-color) 50%));
+  padding: 40px;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px color-mix(in srgb, var(--default-color), transparent 90%);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+/* Header kartu rata tengah */
+#kritik-saran-section .resi-form-wrapper .form-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+#kritik-saran-section .resi-form-wrapper .form-header h3 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: var(--heading-color);
+}
+
+#kritik-saran-section .resi-form-wrapper .form-header p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--default-color);
+  margin-bottom: 0;
+  opacity: .92;
+}
+
+/* Label */
+#kritik-saran-section .formresi .form-label {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* Input/select mengikuti tinggi cek-resi + paksa tema gelap */
+#kritik-saran-section .formresi .form-control,
+#kritik-saran-section .formresi .form-select {
+  height: 50px;
+  /* textarea akan dioverride di bawah */
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 75%);
+  background-color: var(--surface-color) !important;
+  color: var(--default-color) !important;
+  font-size: 16px;
+  transition: all .3s ease;
+}
+
+/* Textarea lebih tinggi & bisa di-resize */
+#kritik-saran-section .formresi textarea.form-control {
+  height: auto;
+  min-height: 180px;
+  resize: vertical;
+}
+
+/* Placeholder lebih jelas */
+#kritik-saran-section .formresi .form-control::placeholder,
+#kritik-saran-section .formresi .form-select::placeholder {
+  color: rgba(255, 255, 255, .86);
+  font-weight: 500;
+}
+
+#kritik-saran-section .formresi .form-control::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, .86);
+  font-weight: 500;
+}
+
+#kritik-saran-section .formresi .form-control::-moz-placeholder {
+  color: rgba(255, 255, 255, .86);
+  font-weight: 500;
+}
+
+#kritik-saran-section .formresi .form-control:-ms-input-placeholder {
+  color: rgba(255, 255, 255, .86);
+  font-weight: 500;
+}
+
+#kritik-saran-section .formresi .form-control::-ms-input-placeholder {
+  color: rgba(255, 255, 255, .86);
+  font-weight: 500;
+}
+
+/* Fokus */
+#kritik-saran-section .formresi .form-control:focus,
+#kritik-saran-section .formresi .form-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 85%);
+  outline: none;
+}
+
+/* Tombol sama seperti cek-resi */
+#kritik-saran-section .formresi .submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent-color),
+      color-mix(in srgb, var(--accent-color), #000 20%));
+  color: var(--contrast-color);
+  border: none;
+  padding: 18px 30px;
+  border-radius: 15px;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all .3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+#kritik-saran-section .formresi .submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px color-mix(in srgb, var(--accent-color), transparent 70%);
+}
+
+@media (max-width:768px) {
+  #kritik-saran-section .resi-form-wrapper {
+    padding: 30px 25px;
+  }
+
+  #kritik-saran-section .resi-form-wrapper .form-header h3 {
+    font-size: 24px;
+  }
+}
+
+
+/* Profile form pakai gaya kotak yang sama */
+#profile-section .resi-form-wrapper {
+  background: linear-gradient(135deg, var(--surface-color),
+      color-mix(in srgb, var(--surface-color), var(--background-color) 50%));
+  padding: 40px;
+  border-radius: 25px;
+  box-shadow: 0 15px 40px color-mix(in srgb, var(--default-color), transparent 90%);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+#profile-section .formresi .form-label {
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+#profile-section .formresi .form-control {
+  height: 50px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 2px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  background-color: var(--surface-color);
+  color: var(--default-color);
+}
+
+#profile-section .formresi .form-control:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 85%);
+}

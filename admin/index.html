@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Panel Admin - CekResi</title>
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+  <header class="header d-flex align-items-center fixed-top" id="header">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <a class="logo d-flex align-items-center me-auto me-xl-0" href="../index.html">
+        <h1 class="sitename">CekResi</h1>
+      </a>
+      <nav class="navmenu" id="navmenu">
+        <ul></ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <!-- CTA dihapus untuk halaman admin -->
+    </div>
+  </header>
+
+  <main class="main" style="padding-top:120px;">
+    <section class="section">
+      <div class="container">
+        <h2 class="mb-4">Panel Admin</h2>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card bg-dark text-white h-100">
+              <div class="card-body">
+                <h5 class="card-title">Pesan Pengguna</h5>
+                <p class="mb-3">Lihat &amp; balas pesan yang dikirim dari halaman Kontak.</p>
+                <a class="btn btn-warning" href="messages.html"><i class="bi bi-chat-dots me-1"></i> Buka</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card bg-dark text-white h-100">
+              <div class="card-body">
+                <h5 class="card-title">Kontak Admin</h5>
+                <p class="mb-3">Kelola info kontak admin (CRUD).</p>
+                <a class="btn btn-warning" href="contacts.html"><i class="bi bi-telephone me-1"></i> Kelola</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="guardMsg" class="mt-4"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/js/auth-ui.js?v=8"></script>
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Guard: hanya admin -->
+  <script>
+    (async () => {
+      try {
+        const r = await fetch('../api_auth.php?action=me', { credentials: 'same-origin', cache: 'no-store' });
+        const d = await r.json();
+        if (d.status !== 200 || d.user?.role !== 'admin') {
+          location.href = '../login.html';
+        }
+      } catch {
+        location.href = '../login.html';
+      }
+    })();
+  </script>
+</body>
+
+</html>

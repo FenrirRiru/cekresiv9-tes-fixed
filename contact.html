@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Kontak Admin - CekResi</title>
+
+  <!-- Icons & Styles -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="assets/css/main.css" rel="stylesheet" />
+
+  <style>
+    /* sentuhan kecil supaya semua tampil “box/card” */
+    .contact-card {
+      background-color: #1f2327;
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 14px;
+      color: #fff;
+    }
+
+    .contact-card .card-title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: .75rem;
+    }
+
+    .contact-item {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: .5rem;
+      padding: .6rem 0;
+      border-top: 1px dashed rgba(255, 255, 255, .08);
+    }
+
+    .contact-item:first-child {
+      border-top: 0;
+    }
+
+    .contact-item a {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    .contact-item a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body class="index-page">
+  <!-- Header -->
+  <header class="header d-flex align-items-center fixed-top" id="header">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <a class="logo d-flex align-items-center me-auto me-xl-0" href="index.html">
+        <h1 class="sitename">CekResi</h1>
+      </a>
+
+      <nav class="navmenu" id="navmenu">
+        <ul></ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <!-- CTA kuning akan tetap terlihat untuk user/guest; di-hide otomatis untuk admin oleh auth-ui.js -->
+      <a class="btn-getstarted" href="index.html#cek-resi-section">Cek Resi Sekarang</a>
+    </div>
+  </header>
+
+  <main class="main" style="padding-top:120px;">
+    <section class="section">
+      <div class="container">
+        <div class="container section-title" data-aos="fade-up">
+          <h2>Kontak Ekpedisi</h2>
+          <p>Informasi resmi untuk menghubungi customer service Ekspedisi.</p>
+        </div>
+
+        <!-- Grid semua kontak sebagai CARD -->
+        <div id="contactGrid" class="row g-4" data-aos="fade-up" data-aos-delay="100"></div>
+
+        <!-- Fallback / pesan -->
+        <div id="contactMsg" class="text-center mt-4"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer bg-dark text-white py-4">
+    <div class="container text-center">
+      <h4 class="mb-2">CekResi</h4>
+      <p class="mb-3">Layanan pelacakan resi dari berbagai kurir secara cepat dan gratis.</p>
+      <div class="copyright">
+        &copy; 2025 <strong><span>Beban Clan</span></strong>. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <a class="scroll-top d-flex align-items-center justify-content-center" href="#" id="scroll-top">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <!-- Vendor & App Scripts -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/auth-ui.js"></script>
+
+  <script>
+    // Ambil data admin_contacts & render semua sebagai card
+    (async function loadContacts() {
+      const grid = document.getElementById('contactGrid');
+      const msg = document.getElementById('contactMsg');
+
+      // Coba beberapa path agar aman bila dipindah folder
+      const bases = ['api_admin_contacts.php', '../api_admin_contacts.php', '/api_admin_contacts.php'];
+      let data = null, baseUsed = null;
+
+      for (const b of bases) {
+        try {
+          const r = await fetch(`${b}?action=list_public`, { cache: 'no-store' });
+          if (!r.ok) continue;
+          const j = await r.json();
+          if (Array.isArray(j)) { data = j; baseUsed = b; break; }
+        } catch { }
+      }
+
+      if (!data) {
+        msg.innerHTML = `<div class="alert alert-danger">Gagal memuat kontak admin.</div>`;
+        return;
+      }
+
+      if (!data.length) {
+        msg.innerHTML = `<div class="text-muted">Belum ada data kontak.</div>`;
+        return;
+      }
+
+      // Kelompokkan berdasarkan label (J&T, JNE, dll)
+      const groups = {};
+      for (const row of data) {
+        const label = (row.label || 'Lainnya').trim();
+        if (!groups[label]) groups[label] = [];
+        groups[label].push(row);
+      }
+
+      // Urutkan label A-Z
+      const labels = Object.keys(groups).sort((a, b) => a.localeCompare(b));
+
+      // Icon per type
+      const iconMap = {
+        phone: 'bi-telephone',
+        website: 'bi-globe',
+        email: 'bi-envelope',
+        address: 'bi-geo-alt',
+        other: 'bi-info-circle'
+      };
+
+      let html = '';
+      for (const label of labels) {
+        const items = groups[label];
+
+        // Susun baris item
+        const rows = items.map(it => {
+          const type = (it.type || 'other').toLowerCase();
+          const icon = iconMap[type] || iconMap.other;
+          const value = (it.value || '').trim();
+
+          // jika website, jadikan link; kalau phone, link tel:; email => mailto:
+          let valueHtml = value;
+          if (type === 'website' && value) {
+            const url = value.startsWith('http') ? value : `https://${value}`;
+            valueHtml = `<a href="${url}" target="_blank" rel="noopener">${value}</a>`;
+          } else if (type === 'phone' && value) {
+            valueHtml = `<a href="tel:${value.replace(/\s+/g, '')}">${value}</a>`;
+          } else if (type === 'email' && value) {
+            valueHtml = `<a href="mailto:${value}">${value}</a>`;
+          }
+
+          return `
+            <div class="contact-item">
+              <div><i class="bi ${icon}"></i></div>
+              <div>
+                <div class="text-uppercase small text-muted">${type}</div>
+                <div>${valueHtml || '-'}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        html += `
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card contact-card h-100">
+              <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-building"></i> ${label}</h5>
+                ${rows}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      grid.innerHTML = html;
+    })();
+  </script>
+</body>
+
+</html>

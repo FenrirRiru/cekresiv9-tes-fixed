@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin • Pesan Pengguna</title>
+  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../assets/css/main.css" rel="stylesheet" />
+  <style>
+    .table thead th {
+      white-space: nowrap
+    }
+
+    .msg-snippet {
+      max-width: 460px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .modal-body pre {
+      white-space: pre-wrap
+    }
+  </style>
+</head>
+
+<body class="index-page">
+  <header class="header d-flex align-items-center fixed-top" id="header">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <a class="logo d-flex align-items-center me-auto me-xl-0" href="../index.html">
+        <h1 class="sitename">CekResi</h1>
+      </a>
+      <nav class="navmenu" id="navmenu">
+        <ul></ul><i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <a class="btn-getstarted" href="../index.html#cek-resi-section">Cek Resi</a>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="section" style="padding-top:120px;">
+      <div class="container section-title">
+        <h2>Kotak Pesan Pengguna</h2>
+        <p>Lihat, balas, dan kelola pesan.</p>
+      </div>
+      <div class="container">
+        <div class="card bg-dark text-white">
+          <div class="card-body">
+            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+              <div class="d-flex gap-2">
+                <button id="btnRefresh" class="btn btn-outline-light btn-sm"><i class="bi bi-arrow-clockwise"></i>
+                  Refresh</button>
+                <button id="btnDeleteSel" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i> Hapus
+                  Terpilih</button>
+              </div>
+              <div class="input-group" style="max-width:360px;">
+                <span class="input-group-text bg-dark text-white border-secondary"><i class="bi bi-search"></i></span>
+                <input id="q" class="form-control bg-dark text-white border-secondary"
+                  placeholder="Cari subjek / nama / email…">
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-dark table-striped table-bordered align-middle">
+                <thead>
+                  <tr>
+                    <th style="width:42px"><input type="checkbox" id="selAll"></th>
+                    <th>Waktu</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Subjek</th>
+                    <th>Pesan</th>
+                    <th style="width:110px">Status</th>
+                    <th style="width:110px">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                  <tr>
+                    <td colspan="8" class="text-center text-muted py-4">Memuat…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="listMsg" class="mt-2 small text-muted"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal fade" id="replyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-envelope-open me-2"></i>Detail Pesan</h5><button
+            class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="msgId">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="mb-2"><strong>Nama:</strong> <span id="dName">-</span></div>
+              <div class="mb-2"><strong>Email:</strong> <a id="dEmail" href="#" class="text-warning">-</a></div>
+            </div>
+            <div class="col-md-6 text-md-end">
+              <div class="mb-2"><strong>Waktu:</strong> <span id="dTime">-</span></div>
+              <div class="mb-2"><strong>Status:</strong> <span id="dStatus" class="badge bg-secondary">-</span></div>
+            </div>
+          </div>
+          <hr>
+          <div class="mb-2"><strong>Subjek:</strong> <span id="dSubject">-</span></div>
+          <div class="mb-3"><strong>Pesan:</strong>
+            <pre id="dBody" class="mt-2 mb-0"></pre>
+          </div>
+          <div class="mb-3"><label class="form-label">Balasan Admin</label><textarea id="dReply"
+              class="form-control bg-dark text-white" rows="5" placeholder="Tulis balasan di sini…"></textarea></div>
+          <div id="replyMsg" class="small"></div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-outline-light" data-bs-dismiss="modal">Tutup</button><button
+            id="btnSaveReply" class="btn btn-warning"><i class="bi bi-send me-1"></i> Simpan Balasan</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/auth-ui.js?v=7"></script>
+  <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (async function () {
+      const ROOT = '../';
+      // guard admin
+      try {
+        const me = await fetch(ROOT + 'api_auth.php?action=me', { credentials: 'same-origin', cache: 'no-store' }).then(r => r.json());
+        if (!(me?.status === 200 && me.user?.role === 'admin')) { location.href = ROOT + 'index.html'; return; }
+      } catch { location.href = ROOT + 'index.html'; return; }
+
+      const tbody = document.getElementById('tbody');
+      const listMsg = document.getElementById('listMsg');
+      const q = document.getElementById('q');
+      const selAll = document.getElementById('selAll');
+      const replyModal = new bootstrap.Modal(document.getElementById('replyModal'));
+      let ALL = [];
+
+      const badge = s => {
+        s = (s || '').toLowerCase();
+        if (s === 'replied') return '<span class="badge bg-success">Dibalas</span>';
+        if (s === 'open' || !s) return '<span class="badge bg-secondary">Baru</span>';
+        return `<span class="badge bg-primary">${s}</span>`;
+      };
+
+      function render() {
+        const term = (q.value || '').toLowerCase();
+        const rows = ALL.filter(r => (r.subject + ' ' + (r.name || '') + ' ' + (r.email || '') + ' ' + r.message).toLowerCase().includes(term));
+        if (rows.length === 0) { tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">Tidak ada data.</td></tr>`; listMsg.textContent = ''; return; }
+        tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td><input type="checkbox" class="sel" value="${r.id}"></td>
+        <td class="text-nowrap">${r.created_at || ''}</td>
+        <td>${r.name || '-'}</td>
+        <td><a href="mailto:${r.email || '#'}" class="text-warning">${r.email || '-'}</a></td>
+        <td>${r.subject || '-'}</td>
+        <td class="msg-snippet">${(r.message || '').replace(/\n/g, ' ')}</td>
+        <td>${badge(r.status)}</td>
+        <td><button class="btn btn-sm btn-outline-info btn-detail" data-id="${r.id}"><i class="bi bi-reply"></i> Detail</button></td>
+      </tr>`).join('');
+        listMsg.textContent = `${rows.length} dari ${ALL.length} pesan`;
+      }
+
+      async function load() {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">Memuat…</td></tr>`;
+        try {
+          const d = await fetch(ROOT + 'api_contact.php?action=admin_list', { credentials: 'same-origin', cache: 'no-store' }).then(r => r.json());
+          ALL = Array.isArray(d) ? d : [];
+          render();
+        } catch (e) { tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">Gagal memuat: ${e.message || ''}</td></tr>`; }
+      }
+
+      document.getElementById('btnRefresh').addEventListener('click', load);
+      q.addEventListener('input', render);
+      selAll.addEventListener('change', () => { document.querySelectorAll('.sel').forEach(c => c.checked = selAll.checked); });
+
+      tbody.addEventListener('click', (e) => {
+        const btn = e.target.closest('.btn-detail'); if (!btn) return;
+        const id = +btn.dataset.id; const r = ALL.find(x => +x.id === id); if (!r) return;
+        msgId.value = id; dName.textContent = r.name || '-'; dEmail.textContent = r.email || '-'; dEmail.href = 'mailto:' + (r.email || '#');
+        dTime.textContent = r.created_at || '-'; dStatus.textContent = (r.status || 'open'); dSubject.textContent = r.subject || '-'; dBody.textContent = r.message || ''; dReply.value = r.reply_text || ''; replyMsg.textContent = '';
+        replyModal.show();
+      });
+
+      document.getElementById('btnSaveReply').addEventListener('click', async () => {
+        const id = +msgId.value; const reply_text = dReply.value.trim(); const msg = replyMsg;
+        if (!id) return; msg.className = 'small text-muted'; msg.textContent = 'Menyimpan…';
+        try {
+          const d = await fetch(ROOT + 'api_contact.php?action=admin_reply', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, reply_text }) }).then(r => r.json());
+          if (d.status === 200) { msg.className = 'small text-success'; msg.textContent = 'Tersimpan.'; load(); } else { msg.className = 'small text-danger'; msg.textContent = d.message || 'Gagal menyimpan.'; }
+        } catch (e) { msg.className = 'small text-danger'; msg.textContent = e.message || 'Gagal menyimpan.'; }
+      });
+
+      document.getElementById('btnDeleteSel').addEventListener('click', async () => {
+        const ids = Array.from(document.querySelectorAll('.sel:checked')).map(x => +x.value);
+        if (ids.length === 0) { alert('Pilih minimal satu pesan.'); return; }
+        if (!confirm(`Hapus ${ids.length} pesan?`)) return;
+        try {
+          const d = await fetch(ROOT + 'api_contact.php?action=admin_delete', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ids }) }).then(r => r.json());
+          if (d.status === 200) load(); else alert(d.message || 'Gagal menghapus.');
+        } catch (e) { alert(e.message || 'Gagal menghapus.'); }
+      });
+
+      load();
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CekResi</title>
+
+    <!-- Vendor CSS -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- App CSS -->
+    <link href="assets/css/main.css" rel="stylesheet" />
+</head>
+
+<body class="index-page">
+    <!-- Header: tetap kosong <ul> agar diisi auth-ui.js -->
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+            <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+                <h1 class="sitename">CekResi</h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul></ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <a href="#cek-resi-section" class="btn-getstarted">Cek Resi Sekarang</a>
+        </div>
+    </header>
+
+    <main class="main">
+
+        <!-- =======================
+         Hero Section
+    ======================== -->
+        <section id="hero" class="hero section">
+            <div class="container">
+                <div class="hero-wrapper">
+
+                    <div class="hero-main-content text-center">
+                        <h1 class="hero-title" data-aos="zoom-in" data-aos-delay="200">
+                            Lacak Paket Anda Dengan<br>
+                            <span class="typed"
+                                data-typed-items="Mudah dan Cepat,Akurat dan Real-Time,Dukungan Banyak Kurir"></span>
+                        </h1>
+
+                        <p class="hero-description" data-aos="fade-up" data-aos-delay="300">
+                            Cek resi pengiriman dari berbagai ekspedisi dalam satu tempat. Praktis, gratis, dan tanpa
+                            ribet!
+                        </p>
+
+                        <a href="#cek-resi-section" class="btn-getstarted" data-aos="fade-up" data-aos-delay="400">
+                            Cek Resi Sekarang
+                        </a>
+
+                        <div class="hero-image-showcase" data-aos="fade-up" data-aos-delay="500">
+                            <div class="image-wrapper">
+                                <img src="assets/img/about/about-18.webp" class="img-fluid" alt="Cek Resi Visual">
+                                <div class="floating-card card-1" data-aos="fade-right" data-aos-delay="600">
+                                    <div class="card-content">
+                                        <div class="card-icon"><i class="bi bi-truck"></i></div>
+                                        <div class="card-info">
+                                            <h4><span class="purecounter" data-purecounter-start="0"
+                                                    data-purecounter-end="99"></span>%</h4>
+                                            <p>Akurasi Pelacakan</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="floating-card card-2" data-aos="fade-left" data-aos-delay="700">
+                                    <div class="card-content">
+                                        <div class="card-icon"><i class="bi bi-person-check"></i></div>
+                                        <div class="card-info">
+                                            <h4><span class="purecounter" data-purecounter-start="0"
+                                                    data-purecounter-end="1000"></span>+</h4>
+                                            <p>Pengguna Puas</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div><!-- /.hero-main-content -->
+
+                </div>
+            </div>
+        </section>
+        <!-- /Hero Section -->
+
+        <!-- =======================
+         Intro / Services Section
+    ======================== -->
+        <section id="services" class="services section">
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Cek Resi</h2>
+                <p>Lacak status pengiriman paket Anda dengan cepat dan mudah melalui berbagai layanan kurir yang
+                    tersedia.</p>
+            </div>
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="intro-content" data-aos="fade-right" data-aos-delay="100">
+                            <div class="section-badge mb-3" data-aos="zoom-in" data-aos-delay="50">
+                                <i class="bi bi-truck"></i>
+                                <span>FITUR UTAMA</span>
+                            </div>
+                            <h2 class="section-heading mb-4">Pantau Paket Anda Secara Real-Time</h2>
+                            <p class="section-description mb-4">Gunakan sistem pelacakan kami untuk mengetahui posisi
+                                dan status
+                                terkini paket Anda dari berbagai ekspedisi seperti J&amp;T, SiCepat, JNE, dan Shopee
+                                Express.</p>
+                            <a href="#cek-resi-section" class="cta-button" data-aos="fade-right"
+                                data-aos-delay="200">Cek Sekarang</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="hero-visual" data-aos="fade-left" data-aos-delay="150">
+                            <img src="assets/img/services/services-1.webp" alt="Cek Resi" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="services-grid mt-5">
+                    <div class="row g-4">
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="service-card">
+                                <div class="card-number"><span>01</span></div>
+                                <div class="card-content">
+                                    <h5 class="service-title"><a href="#">Multi-Kurir</a></h5>
+                                    <p class="service-description">Mendukung pelacakan dari berbagai jasa ekspedisi
+                                        populer di Indonesia.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                            <div class="service-card">
+                                <div class="card-number"><span>02</span></div>
+                                <div class="card-content">
+                                    <h5 class="service-title"><a href="#">Pelacakan Instan</a></h5>
+                                    <p class="service-description">Masukkan nomor resi dan dapatkan status secara
+                                        instan.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                            <div class="service-card">
+                                <div class="card-number"><span>03</span></div>
+                                <div class="card-content">
+                                    <h5 class="service-title"><a href="#">Status Lengkap</a></h5>
+                                    <p class="service-description">Detail lokasi terakhir, waktu update, dan proses
+                                        pengiriman.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                            <div class="service-card">
+                                <div class="card-number"><span>04</span></div>
+                                <div class="card-content">
+                                    <h5 class="service-title"><a href="#">Gratis Digunakan</a></h5>
+                                    <p class="service-description">Cek resi gratis tanpa registrasi.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                            <div class="service-card">
+                                <div class="card-number"><span>05</span></div>
+                                <div class="card-content">
+                                    <h5 class="service-title"><a href="#">Mobile Friendly</a></h5>
+                                    <p class="service-description">Nyaman di perangkat seluler dan desktop.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                            <div class="service-card">
+                                <div class="card-number"><span>06</span></div>
+                                <div class="card-content">
+                                    <h5 class="service-title"><a href="#">Keamanan Data</a></h5>
+                                    <p class="service-description">Privasi nomor resi Anda tetap terjaga.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.services-grid -->
+            </div>
+        </section>
+        <!-- /Intro Section -->
+
+        <!-- =======================
+         Cek Resi Section (tetap)
+    ======================== -->
+        <section id="cek-resi-section" class="resi section" style="scroll-margin-top: 120px;">
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Cek Resi Pengiriman</h2>
+                <p>Masukkan nomor resi &amp; pilih kurir.</p>
+            </div>
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+                <div class="row">
+                    <div class="col-lg-6 mx-auto" data-aos="fade-left" data-aos-delay="200">
+                        <div class="resi-form-wrapper">
+                            <div class="form-header">
+                                <h3>Formulir Cek Resi</h3>
+                                <p>Masukkan data resi dan kurir untuk mengetahui status kiriman Anda.</p>
+                            </div>
+
+                            <form id="cekResiForm" class="formresi">
+                                <div class="mb-3">
+                                    <label for="resi" class="form-label">Nomor Resi</label>
+                                    <input type="text" id="resi" name="resi" class="form-control"
+                                        placeholder="Masukkan nomor resi" required />
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="kurir" class="form-label">Kurir</label>
+                                    <select id="kurir" name="kurir" class="form-select" required>
+                                        <option value="">Pilih Kurir</option>
+                                        <option value="jnt">J&amp;T</option>
+                                        <option value="sicepat">SiCepat</option>
+                                        <option value="spx">Shopee Express</option>
+                                        <option value="jne">JNE</option>
+                                        <option value="anteraja">AnterAja</option>
+                                        <option value="wahana">Wahana</option>
+                                        <option value="ninja">Ninja</option>
+                                        <option value="pos">Pos Indonesia</option>
+                                        <option value="idexpress">ID Express</option>
+                                        <option value="lionparcel">Lion Parcel</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="submit-btn btn btn-primary">
+                                    <span>Cek Resi</span> <i class="bi bi-search"></i>
+                                </button>
+                            </form>
+
+                            <div id="hasilCek" class="mt-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =======================
+         Kritik & Saran (tetap)
+    ======================== -->
+        <section id="kritik-saran-section" class="section">
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Kritik &amp; Saran</h2>
+                <p>Kirim masukan untuk meningkatkan layanan kami. Balasan admin tampil di bawah.</p>
+            </div>
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="resi-form-wrapper">
+                            <div class="form-header text-center">
+                                <h3>Formulir Kritik &amp; Saran</h3>
+                                <p>Sampaikan subjek dan isi pesan Anda.</p>
+                            </div>
+
+                            <form id="contactFormUser" class="formresi">
+                                <div class="mb-3">
+                                    <label for="contactSubject" class="form-label">Subjek</label>
+                                    <input type="text" id="contactSubject" class="form-control"
+                                        placeholder="Masukkan subjek" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="contactMessage" class="form-label">Pesan</label>
+                                    <textarea id="contactMessage" class="form-control" rows="6"
+                                        placeholder="Tulis kritik &amp; saran..." required></textarea>
+                                </div>
+
+                                <div id="contactAlert" class="my-2"></div>
+
+                                <button type="submit" class="submit-btn">
+                                    <span>Kirim</span> <i class="bi bi-send"></i>
+                                </button>
+                                <div id="contactHint" class="small text-muted mt-2"></div>
+                            </form>
+                        </div>
+
+                        <!-- Riwayat pesan & balasan -->
+                        <div class="mt-4">
+                            <h5 class="mb-3">Pesan Saya</h5>
+                            <div id="myMessagesList" class="d-grid gap-3"></div>
+                            <div id="myMessagesEmpty" class="text-muted"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =======================
+         Testimonials Section
+    ======================== -->
+        <section id="testimonials" class="testimonials section">
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Testimoni Pengguna</h2>
+                <p>Berikut adalah pengalaman nyata dari pengguna yang telah menggunakan layanan cek resi kami.</p>
+            </div>
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+                <div class="testimonial-slider swiper init-swiper">
+                    <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": { "delay": 4000 },
+              "slidesPerView": 1,
+              "spaceBetween": 30,
+              "navigation": { "nextEl": ".swiper-button-next", "prevEl": ".swiper-button-prev" },
+              "breakpoints": { "768": { "slidesPerView": 2 }, "1200": { "slidesPerView": 3 } }
+            }
+          </script>
+
+                    <div class="swiper-wrapper">
+                        <!-- 1 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="200">
+                                <div class="testimonial-header">
+                                    <img src="assets/img/person/person-f-12.webp" class="img-fluid" alt="Client"
+                                        loading="lazy">
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                                <div class="testimonial-body">
+                                    <p>Layanan cek resi ini sangat membantu! Semua ekspedisi dalam satu tempat. Praktis!
+                                    </p>
+                                </div>
+                                <div class="testimonial-footer">
+                                    <h5>Jessica</h5><span>Online Seller</span>
+                                    <div class="quote-icon"><i class="bi bi-chat-quote-fill"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 2 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="300">
+                                <div class="testimonial-header">
+                                    <img src="assets/img/person/person-m-8.webp" class="img-fluid" alt="Client"
+                                        loading="lazy">
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                                <div class="testimonial-body">
+                                    <p>Website ini memudahkan saya melacak semua pengiriman tanpa buka banyak aplikasi.
+                                    </p>
+                                </div>
+                                <div class="testimonial-footer">
+                                    <h5>David</h5><span>Kurir Ekspedisi</span>
+                                    <div class="quote-icon"><i class="bi bi-chat-quote-fill"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 3 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="400">
+                                <div class="testimonial-header">
+                                    <img src="assets/img/person/person-f-6.webp" class="img-fluid" alt="Client"
+                                        loading="lazy">
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                                <div class="testimonial-body">
+                                    <p>Antarmukanya simpel dan cepat. Langsung tahu posisi paket tanpa ribet.</p>
+                                </div>
+                                <div class="testimonial-footer">
+                                    <h5>Amanda Putri</h5><span>Ibu Rumah Tangga</span>
+                                    <div class="quote-icon"><i class="bi bi-chat-quote-fill"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 4 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="500">
+                                <div class="testimonial-header">
+                                    <img src="assets/img/person/person-m-12.webp" class="img-fluid" alt="Client"
+                                        loading="lazy">
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                                <div class="testimonial-body">
+                                    <p>Akurat. Bahkan bisa lacak resi dari toko luar negeri juga. Mantap!</p>
+                                </div>
+                                <div class="testimonial-footer">
+                                    <h5>Ryan Nugroho</h5><span>Pembeli Online</span>
+                                    <div class="quote-icon"><i class="bi bi-chat-quote-fill"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 5 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="600">
+                                <div class="testimonial-header">
+                                    <img src="assets/img/person/person-f-10.webp" class="img-fluid" alt="Client"
+                                        loading="lazy">
+                                    <div class="rating">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                            class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                </div>
+                                <div class="testimonial-body">
+                                    <p>Sangat membantu untuk pelanggan. Hemat waktu dan bisnis makin rapi.</p>
+                                </div>
+                                <div class="testimonial-footer">
+                                    <h5>Ayu</h5><span>Reseller Fashion</span>
+                                    <div class="quote-icon"><i class="bi bi-chat-quote-fill"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.swiper-wrapper -->
+
+                    <div class="swiper-navigation">
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                </div><!-- /.testimonial-slider -->
+            </div>
+        </section>
+        <!-- /Testimonials Section -->
+
+    </main>
+
+    <!-- =======================
+       Footer (baru)
+  ======================== -->
+    <footer id="footer" class="footer bg-dark text-white py-4">
+        <div class="container text-center">
+            <h4 class="mb-2">CekResi</h4>
+            <p class="mb-3">Layanan pelacakan resi dari berbagai kurir secara cepat dan gratis.</p>
+            <div class="social-links mb-3">
+                <a href="#" class="text-white mx-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-envelope-fill"></i></a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 <strong><span>Beban Clan</span></strong>. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short"></i>
+    </a>
+
+    <!-- Vendor JS -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/typed.js/typed.umd.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- App JS -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/auth-ui.js"></script>
+    <script src="assets/script.js"></script>
+</body>
+
+</html>

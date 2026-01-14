@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Profil - CekResi</title>
+
+    <!-- Vendor -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+
+    <!-- Header -->
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container position-relative d-flex align-items-center justify-content-between">
+            <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+                <h1 class="sitename">CekResi</h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul></ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <a href="index.html#cek-resi-section" class="btn-getstarted">Cek Resi Sekarang</a>
+        </div>
+    </header>
+
+    <main class="main" style="padding-top:120px;">
+        <!-- Profile Section -->
+        <section id="profile-section" class="section">
+            <div class="container" data-aos="fade-up">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="resi-form-wrapper">
+                            <div class="form-header text-center mb-4">
+                                <h3>Edit Profil</h3>
+                                <p>Ubah nama/email dan (opsional) ganti password. Semua perubahan memerlukan verifikasi
+                                    password saat ini.</p>
+                            </div>
+
+                            <form id="profileForm" class="formresi" novalidate>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="name" class="form-label">Nama</label>
+                                        <input id="name" name="name" type="text" class="form-control"
+                                            placeholder="Nama Anda" required>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input id="email" name="email" type="email" class="form-control"
+                                            placeholder="email@contoh.com" required>
+                                        <!-- Kalau ingin email tidak bisa diubah: tambahkan atribut readonly -->
+                                    </div>
+                                </div>
+
+                                <hr class="my-4" />
+
+                                <div class="row g-3">
+                                    <div class="col-md-12">
+                                        <label for="currentPassword" class="form-label">Password Saat Ini <span
+                                                class="text-danger">*</span></label>
+                                        <input id="currentPassword" name="currentPassword" type="password"
+                                            class="form-control" placeholder="Masukkan password saat ini" required>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="newPassword" class="form-label">Password Baru (opsional)</label>
+                                        <input id="newPassword" name="newPassword" type="password" class="form-control"
+                                            placeholder="Biarkan kosong jika tidak ganti">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="confirmNewPassword" class="form-label">Ulangi Password Baru</label>
+                                        <input id="confirmNewPassword" name="confirmNewPassword" type="password"
+                                            class="form-control" placeholder="Ulangi jika mengisi password baru">
+                                    </div>
+                                </div>
+
+                                <div id="profileMsg" class="mt-3 small"></div>
+
+                                <div class="d-flex gap-2 mt-3">
+                                    <button type="submit" class="submit-btn">
+                                        <span>Simpan Perubahan</span>
+                                        <i class="bi bi-check2-circle"></i>
+                                    </button>
+
+                                    <button type="button" id="btnDelete" class="btn btn-outline-danger">
+                                        <i class="bi bi-trash me-1"></i> Hapus Akun
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Riwayat bantuan kecil -->
+                <div class="row mt-4">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="alert alert-warning bg-opacity-10 border-warning text-warning">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Untuk mengganti password: isi <strong>Password Saat Ini</strong>, lalu masukkan
+                            <strong>Password Baru</strong> dan <strong>Ulangi Password Baru</strong>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Hapus Akun -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content" id="deleteForm">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Konfirmasi Hapus Akun</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-3">
+                        Tindakan ini akan <strong>menghapus akun dan data terkait</strong> (riwayat cek, pesan kontak).
+                        Tindakan tidak dapat dibatalkan.
+                    </p>
+                    <div class="mb-3">
+                        <label for="deleteCurrentPassword" class="form-label">Password Saat Ini</label>
+                        <input type="password" id="deleteCurrentPassword" class="form-control"
+                            placeholder="Masukkan password Anda" required>
+                    </div>
+                    <div class="mb-2">
+                        <label for="confirmText" class="form-label">Ketik <strong>HAPUS</strong> untuk
+                            konfirmasi</label>
+                        <input type="text" id="confirmText" class="form-control" placeholder="HAPUS" required>
+                    </div>
+                    <div id="deleteMsg" class="small mt-2"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-danger" type="submit"><i class="bi bi-trash me-1"></i> Hapus Akun</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Vendor JS -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App JS -->
+    <script src="assets/js/auth-ui.js"></script>
+    <script src="assets/js/profile.js"></script>
+</body>
+
+</html>

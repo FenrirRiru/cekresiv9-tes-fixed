@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login</title>
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+  <header class="header d-flex align-items-center fixed-top" id="header">
+    <div class="container position-relative d-flex align-items-center justify-content-between">
+      <a class="logo d-flex align-items-center me-auto me-xl-0" href="index.html">
+        <h1 class="sitename">CekResi</h1>
+      </a>
+      <nav class="navmenu" id="navmenu">
+        <ul></ul><i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <a class="btn-getstarted" href="index.html#cek-resi-section">Cek Resi</a>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="section" style="padding-top:120px">
+      <div class="container" style="max-width:520px">
+        <div class="card bg-dark text-white">
+          <div class="card-body">
+            <h3 class="mb-4">Login</h3>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input id="email" type="email" class="form-control bg-dark text-white" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input id="password" type="password" class="form-control bg-dark text-white" required>
+            </div>
+            <div id="msg" class="small mb-3"></div>
+            <button id="btnLogin" class="btn btn-warning w-100">Masuk</button>
+            <p class="mt-3 mb-0 text-center">Belum punya akun? <a class="text-warning" href="signup.html">Signup</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/js/auth-ui.js"></script>
+  <script>
+    document.getElementById('btnLogin').addEventListener('click', async () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const msg = document.getElementById('msg');
+      if (!email || !password) { msg.className = 'small text-danger'; msg.textContent = 'Lengkapi email & password.'; return; }
+      msg.className = 'small text-muted'; msg.textContent = 'Memproses…';
+      try {
+        const res = await fetch('api_auth.php?action=login', {
+          method: 'POST', credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        }).then(r => r.json());
+
+        if (res.status === 200) {
+          const role = res.user?.role || 'user';
+          if (role === 'admin') location.href = 'admin/index.html';
+          else location.href = 'index.html';
+          return;
+        }
+        msg.className = 'small text-danger'; msg.textContent = res.message || 'Login gagal.';
+      } catch (e) {
+        msg.className = 'small text-danger'; msg.textContent = e.message || 'Login gagal.';
+      }
+    });
+  </script>
+</body>
+
+</html>

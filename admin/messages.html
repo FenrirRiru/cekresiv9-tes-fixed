@@ -195,7 +195,11 @@
 
       document.getElementById('btnSaveReply').addEventListener('click', async () => {
         const id = +msgId.value; const reply_text = dReply.value.trim(); const msg = replyMsg;
-        if (!id) return; msg.className = 'small text-muted'; msg.textContent = 'Menyimpan…';
+        if (!id) {
+          return;
+        }
+        msg.className = 'small text-muted';
+        msg.textContent = 'Menyimpan…';
         try {
           const d = await fetch(ROOT + 'api_contact.php?action=admin_reply', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, reply_text }) }).then(r => r.json());
           if (d.status === 200) { msg.className = 'small text-success'; msg.textContent = 'Tersimpan.'; load(); } else { msg.className = 'small text-danger'; msg.textContent = d.message || 'Gagal menyimpan.'; }
@@ -208,11 +212,23 @@
         if (!confirm(`Hapus ${ids.length} pesan?`)) return;
         try {
           const d = await fetch(ROOT + 'api_contact.php?action=admin_delete', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ids }) }).then(r => r.json());
-          if (d.status === 200) load(); else alert(d.message || 'Gagal menghapus.');
+          if (d.status === 200) {
+            load();
+          } else {
+            alert(d.message || 'Gagal menghapus.');
+          }
         } catch (e) { alert(e.message || 'Gagal menghapus.'); }
       });
 
-      load();
+      // Initial load using top-level await
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">Memuat…</td></tr>`;
+      try {
+        const d = await fetch(ROOT + 'api_contact.php?action=admin_list', { credentials: 'same-origin', cache: 'no-store' }).then(r => r.json());
+        ALL = Array.isArray(d) ? d : [];
+        render();
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">Gagal memuat: ${e.message || ''}</td></tr>`;
+      }
   </script>
 </body>
 

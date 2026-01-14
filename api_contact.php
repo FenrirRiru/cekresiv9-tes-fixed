@@ -30,7 +30,7 @@ try {
   }
 
   /*  =================
-      USER: kirim pesan 
+      USER: kirim pesan
       ================= */
   if ($action === 'send') {
     $u = me();

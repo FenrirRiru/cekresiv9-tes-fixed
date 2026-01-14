@@ -114,7 +114,7 @@
           <div class="mb-3"><strong>Pesan:</strong>
             <pre id="dBody" class="mt-2 mb-0"></pre>
           </div>
-          <div class="mb-3"><label class="form-label">Balasan Admin</label><textarea id="dReply"
+          <div class="mb-3"><label class="form-label" for="dReply">Balasan Admin</label><textarea id="dReply"
               class="form-control bg-dark text-white" rows="5" placeholder="Tulis balasan di sini…"></textarea></div>
           <div id="replyMsg" class="small"></div>
         </div>
@@ -126,14 +126,19 @@
 
   <script src="../assets/js/auth-ui.js?v=7"></script>
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script>
-    (async function () {
+  <script type="module">
       const ROOT = '../';
       // guard admin
       try {
         const me = await fetch(ROOT + 'api_auth.php?action=me', { credentials: 'same-origin', cache: 'no-store' }).then(r => r.json());
-        if (!(me?.status === 200 && me.user?.role === 'admin')) { location.href = ROOT + 'index.html'; return; }
-      } catch { location.href = ROOT + 'index.html'; return; }
+        if (!(me?.status === 200 && me.user?.role === 'admin')) {
+          location.href = ROOT + 'index.html';
+          return;
+        }
+      } catch {
+        location.href = ROOT + 'index.html';
+        return;
+      }
 
       const tbody = document.getElementById('tbody');
       const listMsg = document.getElementById('listMsg');
@@ -160,7 +165,7 @@
         <td>${r.name || '-'}</td>
         <td><a href="mailto:${r.email || '#'}" class="text-warning">${r.email || '-'}</a></td>
         <td>${r.subject || '-'}</td>
-        <td class="msg-snippet">${(r.message || '').replace(/\n/g, ' ')}</td>
+        <td class="msg-snippet">${(r.message || '').replaceAll('\n', ' ')}</td>
         <td>${badge(r.status)}</td>
         <td><button class="btn btn-sm btn-outline-info btn-detail" data-id="${r.id}"><i class="bi bi-reply"></i> Detail</button></td>
       </tr>`).join('');
@@ -208,7 +213,6 @@
       });
 
       load();
-    })();
   </script>
 </body>
 

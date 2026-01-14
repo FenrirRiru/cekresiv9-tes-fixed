@@ -402,7 +402,8 @@ document.addEventListener("DOMContentLoaded", () => {
   async function pickAPI(urls) {
     for (const u of urls) {
       try {
-        const r = await fetch(u + (u.includes("?") ? "&" : "?") + "ping=1", {
+        const separator = u.includes("?") ? "&" : "?";
+        const r = await fetch(u + separator + "ping=1", {
           cache: "no-store",
         });
         if (r.ok) return u.split("?")[0]; // base saja

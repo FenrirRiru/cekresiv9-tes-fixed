@@ -223,7 +223,21 @@
         editModal.show();
       });
 
-      load();
+      // Initial load using top-level await
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Memuat…</td></tr>`;
+      try {
+        let r = await fetch(`${API_PATH}?action=list`, { credentials: 'same-origin', cache: 'no-store' });
+        if ([401, 403, 404].includes(r.status)) {
+          r = await fetch(`${API_PATH}?action=list_public`, { cache: 'no-store' });
+        }
+        ALL = await r.json();
+        if (!Array.isArray(ALL)) {
+          ALL = [];
+        }
+        render();
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Gagal memuat: ${e.message || ''}</td></tr>`;
+      }
   </script>
 </body>
 

@@ -3,7 +3,7 @@
 $host = "localhost";
 $db = "cekresiv9";
 $user = "root";
-$pass = "fenrir1234";
+$pass = "getenv('secret');";
 
 try {
     $conn = new PDO(

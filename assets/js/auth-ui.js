@@ -53,12 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // === MODE USER BIASA (admin di halaman umum tetap dapat akses Admin) ===
+    const adminClass = isAdminPath ? 'active' : '';
+    const adminLink = isAdmin ? `<li><a href="${ROOT}admin/index.html" class="${adminClass}">Admin</a></li>` : '';
     navUL.innerHTML = `
       <li><a href="${ROOT}index.html#cek-resi-section">Cek Resi</a></li>
       <li><a href="${ROOT}history.html" class="${activeEndsWith('history.html')}">History</a></li>
       <li><a href="${ROOT}contact.html" class="${activeEndsWith('contact.html')}">Kontak</a></li>
       <li><a href="${ROOT}profile.html" class="${activeEndsWith('profile.html')}">Profil</a></li>
-      ${isAdmin ? `<li><a href="${ROOT}admin/index.html" class="${isAdminPath ? 'active' : ''}">Admin</a></li>` : ``}
+      ${adminLink}
       <li><a href="#" data-logout>Logout</a></li>
     `;
     if (ctaBtn) {

@@ -3,16 +3,18 @@
 $envFile = __DIR__ . '/.env';
 if (file_exists($envFile)) {
   foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-    if (str_starts_with(trim($line), '#'))
+    if (str_starts_with(trim($line), '#')) {
       continue;
+    }
     [$k, $v] = explode('=', $line, 2);
     putenv(trim($k) . '=' . trim($v));
   }
 }
 
 declare(strict_types=1);
-if (session_status() === PHP_SESSION_NONE)
+if (session_status() === PHP_SESSION_NONE) {
   session_start();
+}
 header('Content-Type: application/json; charset=utf-8');
 require_once 'db.php';
 
@@ -59,8 +61,9 @@ if ($action === 'cekResi') {
   $resi = trim($in['resi'] ?? '');
   $kurirRaw = trim($in['kurir'] ?? '');
   $save = (int) ($in['save'] ?? 0);
-  if ($resi === '' || $kurirRaw === '')
+  if ($resi === '' || $kurirRaw === '') {
     err(400, 'Resi dan kurir wajib.');
+  }
 
   $kurir = mapCourier($kurirRaw);
 
@@ -78,13 +81,15 @@ if ($action === 'cekResi') {
     CURLOPT_SSL_VERIFYPEER => true
   ]);
   $response = curl_exec($ch);
-  if (curl_errno($ch))
+  if (curl_errno($ch)) {
     err(500, "Gagal akses API: " . curl_error($ch));
+  }
   curl_close($ch);
 
   $data = json_decode($response, true);
-  if (!$data)
+  if (!$data) {
     err(500, 'Gagal parse respons API');
+  }
 
   if (($data['status'] ?? 500) != 200 || !isset($data['data'])) {
     err($data['status'] ?? 500, $data['message'] ?? 'Gagal mengambil data');
@@ -112,8 +117,9 @@ if ($action === 'cekResi') {
 
 // GET HISTORY (user only)
 if ($action === 'getcekresi') {
-  if (!isset($_SESSION['user']))
+  if (!isset($_SESSION['user'])) {
     err(401, 'Login diperlukan');
+  }
   $uid = (int) $_SESSION['user']['id'];
   try {
     $st = $conn->prepare("SELECT id,resi,kurir,response_json,created_at FROM cekresi WHERE user_id=? ORDER BY id DESC");
@@ -127,13 +133,15 @@ if ($action === 'getcekresi') {
 
 // DELETE SELECTED (user only)
 if ($action === 'deletecekresi') {
-  if (!isset($_SESSION['user']))
+  if (!isset($_SESSION['user'])) {
     err(401, 'Login diperlukan');
+  }
   $uid = (int) $_SESSION['user']['id'];
   $in = json_decode(file_get_contents('php://input'), true) ?? [];
   $ids = $in['ids'] ?? [];
-  if (!is_array($ids) || count($ids) === 0)
+  if (!is_array($ids) || count($ids) === 0) {
     err(400, 'IDs kosong');
+  }
 
   $place = implode(',', array_fill(0, count($ids), '?'));
   $params = array_map('intval', $ids);

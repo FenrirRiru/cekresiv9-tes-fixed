@@ -4,7 +4,7 @@ session_start();
 header('Content-Type: application/json; charset=utf-8');
 require_once 'db.php';
 
-function require_admin()
+function requireAdmin()
 {
     if (!isset($_SESSION['user']) || ($_SESSION['user']['role'] ?? '') !== 'admin') {
         http_response_code(401);
@@ -25,14 +25,14 @@ try {
     }
 
     if ($action === 'list') {
-        require_admin();
+        requireAdmin();
         $st = $conn->query("SELECT id,label,type,value,created_at,updated_at FROM admin_contacts ORDER BY id DESC");
         echo json_encode($st->fetchAll(), JSON_UNESCAPED_UNICODE);
         exit;
     }
 
     if ($action === 'create') {
-        require_admin();
+        requireAdmin();
         $label = trim($body['label'] ?? '');
         $type = strtolower(trim($body['type'] ?? 'other'));
         $value = trim($body['value'] ?? '');
@@ -48,7 +48,7 @@ try {
     }
 
     if ($action === 'update') {
-        require_admin();
+        requireAdmin();
         $id = (int) ($body['id'] ?? 0);
         $label = trim($body['label'] ?? '');
         $type = strtolower(trim($body['type'] ?? 'other'));
@@ -69,7 +69,7 @@ try {
     }
 
     if ($action === 'delete') {
-        require_admin();
+        requireAdmin();
         $ids = $body['ids'] ?? [];
         if (!is_array($ids) || empty($ids)) {
             echo json_encode(['status' => 422, 'message' => 'IDs kosong']);

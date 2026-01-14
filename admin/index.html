@@ -58,18 +58,16 @@
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Guard: hanya admin -->
-  <script>
-    (async () => {
-      try {
-        const r = await fetch('../api_auth.php?action=me', { credentials: 'same-origin', cache: 'no-store' });
-        const d = await r.json();
-        if (d.status !== 200 || d.user?.role !== 'admin') {
-          location.href = '../login.html';
-        }
-      } catch {
+  <script type="module">
+    try {
+      const r = await fetch('../api_auth.php?action=me', { credentials: 'same-origin', cache: 'no-store' });
+      const d = await r.json();
+      if (d.status !== 200 || d.user?.role !== 'admin') {
         location.href = '../login.html';
       }
-    })();
+    } catch {
+      location.href = '../login.html';
+    }
   </script>
 </body>
 

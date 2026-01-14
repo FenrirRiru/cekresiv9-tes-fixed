@@ -2,12 +2,12 @@
 if (session_status() === PHP_SESSION_NONE)
     session_start();
 
-function current_user()
+function currentUser()
 {
     return $_SESSION['user'] ?? null;
 }
 
-function require_login_json()
+function requireLoginJson()
 {
     if (!isset($_SESSION['user'])) {
         header('Content-Type: application/json; charset=utf-8');
@@ -15,7 +15,7 @@ function require_login_json()
         exit;
     }
 }
-function require_admin_json()
+function requireAdminJson()
 {
     if (!isset($_SESSION['user']) || (($_SESSION['user']['role'] ?? 'user') !== 'admin')) {
         header('Content-Type: application/json; charset=utf-8');
@@ -23,14 +23,14 @@ function require_admin_json()
         exit;
     }
 }
-function require_login_page()
+function requireLoginPage()
 {
     if (!isset($_SESSION['user'])) {
         header('Location: login.html');
         exit;
     }
 }
-function require_admin_page()
+function requireAdminPage()
 {
     if (!isset($_SESSION['user']) || (($_SESSION['user']['role'] ?? 'user') !== 'admin')) {
         header('Location: login.html');

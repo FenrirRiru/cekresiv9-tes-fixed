@@ -104,22 +104,22 @@
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/auth-ui.js"></script>
 
-  <script>
+  <script type="module">
     // Ambil data admin_contacts & render semua sebagai card
-    (async function loadContacts() {
+    async function loadContacts() {
       const grid = document.getElementById('contactGrid');
       const msg = document.getElementById('contactMsg');
 
       // Coba beberapa path agar aman bila dipindah folder
       const bases = ['api_admin_contacts.php', '../api_admin_contacts.php', '/api_admin_contacts.php'];
-      let data = null, baseUsed = null;
+      let data = null;
 
       for (const b of bases) {
         try {
           const r = await fetch(`${b}?action=list_public`, { cache: 'no-store' });
           if (!r.ok) continue;
           const j = await r.json();
-          if (Array.isArray(j)) { data = j; baseUsed = b; break; }
+          if (Array.isArray(j)) { data = j; break; }
         } catch { }
       }
 
@@ -198,7 +198,9 @@
       }
 
       grid.innerHTML = html;
-    })();
+    }
+
+    loadContacts();
   </script>
 </body>
 

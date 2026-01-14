@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .addEventListener("click", async () => {
             const ids = Array.from(
               document.querySelectorAll(".sel:checked")
-            ).map((i) => parseInt(i.value, 10));
+            ).map((i) => Number.parseInt(i.value, 10));
             if (ids.length === 0) {
               alert("Pilih data terlebih dahulu");
               return;
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ---------- RESI.HTML: auto load dari query + tombol UPDATE (simpan) ---------- */
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(location.search);
   const resiParam = params.get("resi");
   const kurirParam = params.get("kurir");
 

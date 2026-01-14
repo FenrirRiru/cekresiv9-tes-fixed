@@ -1,30 +1,33 @@
 <?php
 // api_auth.php
 declare(strict_types=1);
-if (session_status() === PHP_SESSION_NONE)
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
 header('Content-Type: application/json; charset=utf-8');
 
 require_once 'db.php'; // harus menghasilkan $conn (PDO) + mode error exception
 
-function json_out($arr)
+const PHP_INPUT_STREAM = 'php://input';
+
+function jsonOut($arr)
 {
     echo json_encode($arr, JSON_UNESCAPED_UNICODE);
     exit;
 }
 function ok($extra = [])
 {
-    json_out(['status' => 200] + $extra);
+    jsonOut(['status' => 200] + $extra);
 }
 function err($code, $msg)
 {
-    json_out(['status' => $code, 'message' => $msg]);
+    jsonOut(['status' => $code, 'message' => $msg]);
 }
 
 $action = $_GET['action'] ?? '';
 
 /* Helpers */
-function get_user_safe($row)
+function getUserSafe($row)
 {
     return [
         'id' => (int) $row['id'],
@@ -37,23 +40,27 @@ function get_user_safe($row)
 
 /* ============ SIGNUP ============ */
 if ($action === 'signup') {
-    $in = json_decode(file_get_contents('php://input'), true) ?? $_POST;
+    $in = json_decode(file_get_contents(PHP_INPUT_STREAM), true) ?? $_POST;
     $name = trim($in['name'] ?? '');
     $email = strtolower(trim($in['email'] ?? ''));
     $password = (string) ($in['password'] ?? '');
 
-    if ($name === '' || $email === '' || $password === '')
+    if ($name === '' || $email === '' || $password === '') {
         err(400, 'Nama, email, dan password wajib.');
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+    }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         err(400, 'Format email tidak valid.');
-    if (strlen($password) < 6)
+    }
+    if (strlen($password) < 6) {
         err(400, 'Password minimal 6 karakter.');
+    }
 
     // cek duplikat
     $st = $conn->prepare("SELECT id FROM users WHERE email=? LIMIT 1");
     $st->execute([$email]);
-    if ($st->fetch())
+    if ($st->fetch()) {
         err(409, 'Email sudah terdaftar.');
+    }
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
     $ins = $conn->prepare("INSERT INTO users (name,email,password_hash,role) VALUES (?,?,?,'user')");
@@ -64,19 +71,20 @@ if ($action === 'signup') {
 
 /* ============ LOGIN ============ */
 if ($action === 'login') {
-    $in = json_decode(file_get_contents('php://input'), true) ?? $_POST;
+    $in = json_decode(file_get_contents(PHP_INPUT_STREAM), true) ?? $_POST;
     $email = strtolower(trim($in['email'] ?? ''));
     $password = (string) ($in['password'] ?? '');
 
-    if ($email === '' || $password === '')
+    if ($email === '' || $password === '') {
         err(400, 'Email dan password wajib.');
+    }
     $st = $conn->prepare("SELECT * FROM users WHERE email=? LIMIT 1");
     $st->execute([$email]);
     $row = $st->fetch();
     if (!$row || !password_verify($password, $row['password_hash'])) {
         err(401, 'Email atau password salah.');
     }
-    $_SESSION['user'] = get_user_safe($row);
+    $_SESSION['user'] = getUserSafe($row);
     ok(['user' => $_SESSION['user']]);
 }
 
@@ -93,43 +101,49 @@ if ($action === 'logout') {
 
 /* ============ ME (cek sesi) ============ */
 if ($action === 'me') {
-    if (!isset($_SESSION['user']))
+    if (!isset($_SESSION['user'])) {
         err(401, 'Not logged in');
+    }
     ok(['user' => $_SESSION['user']]);
 }
 
 /* ============ UPDATE PROFILE (butuh password saat ini) ============ */
 if ($action === 'update_profile') {
-    if (!isset($_SESSION['user']))
+    if (!isset($_SESSION['user'])) {
         err(401, 'Login diperlukan');
+    }
     $uid = (int) $_SESSION['user']['id'];
 
-    $in = json_decode(file_get_contents('php://input'), true) ?? [];
+    $in = json_decode(file_get_contents(PHP_INPUT_STREAM), true) ?? [];
     $name = trim($in['name'] ?? '');
     $email = strtolower(trim($in['email'] ?? ''));
     $current = (string) ($in['current_password'] ?? '');
     $new = (string) ($in['new_password'] ?? '');
 
-    if ($name === '' || $email === '' || $current === '')
+    if ($name === '' || $email === '' || $current === '') {
         err(400, 'Nama, email, dan password saat ini wajib.');
+    }
 
     // ambil user
     $st = $conn->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
     $st->execute([$uid]);
     $user = $st->fetch();
-    if (!$user)
+    if (!$user) {
         err(404, 'User tidak ditemukan');
+    }
 
     // verifikasi password lama
-    if (!password_verify($current, $user['password_hash']))
+    if (!password_verify($current, $user['password_hash'])) {
         err(403, 'Password saat ini tidak cocok.');
+    }
 
     // jika email diganti cek unik
     if ($email !== strtolower($user['email'])) {
         $chk = $conn->prepare("SELECT id FROM users WHERE email=? AND id<>? LIMIT 1");
         $chk->execute([$email, $uid]);
-        if ($chk->fetch())
+        if ($chk->fetch()) {
             err(409, 'Email sudah digunakan.');
+        }
     }
 
     // Build update
@@ -137,8 +151,9 @@ if ($action === 'update_profile') {
     $params = [$name, $email];
 
     if ($new !== '') {
-        if (strlen($new) < 6)
+        if (strlen($new) < 6) {
             err(400, 'Password baru minimal 6 karakter.');
+        }
         $sql .= ", password_hash=?";
         $params[] = password_hash($new, PASSWORD_DEFAULT);
     }
@@ -151,32 +166,36 @@ if ($action === 'update_profile') {
     // refresh sesi
     $st = $conn->prepare("SELECT * FROM users WHERE id=?");
     $st->execute([$uid]);
-    $_SESSION['user'] = get_user_safe($st->fetch());
+    $_SESSION['user'] = getUserSafe($st->fetch());
 
     ok(['message' => 'Profil diperbarui', 'user' => $_SESSION['user']]);
 }
 
 /* ============ DELETE ACCOUNT (butuh password saat ini) ============ */
 if ($action === 'delete_account') {
-    if (!isset($_SESSION['user']))
+    if (!isset($_SESSION['user'])) {
         err(401, 'Login diperlukan');
+    }
     $uid = (int) $_SESSION['user']['id'];
 
-    $in = json_decode(file_get_contents('php://input'), true) ?? [];
+    $in = json_decode(file_get_contents(PHP_INPUT_STREAM), true) ?? [];
     $current = (string) ($in['current_password'] ?? '');
-    if ($current === '')
+    if ($current === '') {
         err(400, 'Password saat ini wajib.');
+    }
 
     // ambil user
     $st = $conn->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
     $st->execute([$uid]);
     $user = $st->fetch();
-    if (!$user)
+    if (!$user) {
         err(404, 'User tidak ditemukan');
+    }
 
     // verifikasi
-    if (!password_verify($current, $user['password_hash']))
+    if (!password_verify($current, $user['password_hash'])) {
         err(403, 'Password saat ini tidak cocok.');
+    }
 
     // hapus data terkait (opsional, sesuaikan nama tabel)
     try {
@@ -194,8 +213,9 @@ if ($action === 'delete_account') {
         $delU->execute([$uid]);
         $conn->commit();
     } catch (Throwable $e) {
-        if ($conn->inTransaction())
+        if ($conn->inTransaction()) {
             $conn->rollBack();
+        }
         err(500, 'Gagal menghapus akun: ' . $e->getMessage());
     }
 

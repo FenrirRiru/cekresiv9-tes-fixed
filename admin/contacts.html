@@ -121,10 +121,9 @@
 
   <script src="../assets/js/auth-ui.js?v=7"></script>
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script>
-    (async function () {
-      // UBAH ini jika kamu memindahkan file API ke /admin
-      const API_PATH = '../api_admin_contacts.php';
+  <script type="module">
+    // UBAH ini jika kamu memindahkan file API ke /admin
+    const API_PATH = '../api_admin_contacts.php';
 
       // deteksi admin (untuk aktifkan CRUD)
       let IS_ADMIN = false;
@@ -225,7 +224,6 @@
       });
 
       load();
-    })();
   </script>
 </body>
 

@@ -1,22 +1,14 @@
 <?php
-// Load .env (simple loader)
-$envFile = __DIR__ . '/.env';
-if (file_exists($envFile)) {
-  foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-    if (str_starts_with(trim($line), '#')) {
-      continue;
-    }
-    [$k, $v] = explode('=', $line, 2);
-    putenv(trim($k) . '=' . trim($v));
-  }
-}
-
 declare(strict_types=1);
+
+use App\Database;
+
+Database::init();
+
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 header('Content-Type: application/json; charset=utf-8');
-require_once 'db.php';
 
 function out($a)
 {
@@ -100,14 +92,14 @@ if ($action === 'cekResi') {
     $uid = (int) $_SESSION['user']['id'];
     $json = json_encode($data['data'], JSON_UNESCAPED_UNICODE);
 
-    $st = $conn->prepare("SELECT id FROM cekresi WHERE user_id=? AND resi=? AND kurir=? LIMIT 1");
+    $st = Database::$conn->prepare("SELECT id FROM cekresi WHERE user_id=? AND resi=? AND kurir=? LIMIT 1");
     $st->execute([$uid, $resi, $kurirRaw]);
 
     if ($st->fetch()) {
-      $up = $conn->prepare("UPDATE cekresi SET response_json=?, created_at=CURRENT_TIMESTAMP WHERE user_id=? AND resi=? AND kurir=?");
+      $up = Database::$conn->prepare("UPDATE cekresi SET response_json=?, created_at=CURRENT_TIMESTAMP WHERE user_id=? AND resi=? AND kurir=?");
       $up->execute([$json, $uid, $resi, $kurirRaw]);
     } else {
-      $ins = $conn->prepare("INSERT INTO cekresi (user_id,resi,kurir,response_json) VALUES (?,?,?,?)");
+      $ins = Database::$conn->prepare("INSERT INTO cekresi (user_id,resi,kurir,response_json) VALUES (?,?,?,?)");
       $ins->execute([$uid, $resi, $kurirRaw, $json]);
     }
   }
@@ -122,7 +114,7 @@ if ($action === 'getcekresi') {
   }
   $uid = (int) $_SESSION['user']['id'];
   try {
-    $st = $conn->prepare("SELECT id,resi,kurir,response_json,created_at FROM cekresi WHERE user_id=? ORDER BY id DESC");
+    $st = Database::$conn->prepare("SELECT id,resi,kurir,response_json,created_at FROM cekresi WHERE user_id=? ORDER BY id DESC");
     $st->execute([$uid]);
     $rows = $st->fetchAll();
     out($rows);
@@ -149,7 +141,7 @@ if ($action === 'deletecekresi') {
 
   try {
     $sql = "DELETE FROM cekresi WHERE user_id=? AND id IN ($place)";
-    $st = $conn->prepare($sql);
+    $st = Database::$conn->prepare($sql);
     $st->execute($params);
     ok(['message' => 'Terhapus', 'deleted' => $st->rowCount()]);
   } catch (PDOException $e) {

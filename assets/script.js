@@ -475,12 +475,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const created = row.created_at
       ? `<span class="small text-muted">${row.created_at}</span>`
       : "";
+    const updated = row.updated_at ? `<div class="small text-muted mt-2">${row.updated_at}</div>` : "";
     const reply = row.reply_text
       ? `
       <div class="mt-3 p-3 rounded" style="background:#1f2327;border:1px solid rgba(255,255,255,.08);">
         <div class="mb-1 fw-semibold"><i class="bi bi-reply-fill me-1"></i>Balasan Admin</div>
         <div>${row.reply_text}</div>
-        ${row.updated_at ? `<div class="small text-muted mt-2">${row.updated_at}</div>` : ""}
+        ${updated}
       </div>`
       : "";
 

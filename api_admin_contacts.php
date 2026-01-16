@@ -1,8 +1,12 @@
 <?php
 declare(strict_types=1);
+
+use App\Database;
+
+Database::init();
+
 session_start();
 header('Content-Type: application/json; charset=utf-8');
-require_once 'db.php';
 
 function requireAdmin()
 {
@@ -19,14 +23,14 @@ $body = $raw ? json_decode($raw, true) : [];
 
 try {
     if ($action === 'list_public') {
-        $st = $conn->query("SELECT id,label,type,value,created_at,updated_at FROM admin_contacts ORDER BY label ASC, type ASC, id DESC");
+        $st = Database::$conn->query("SELECT id,label,type,value,created_at,updated_at FROM admin_contacts ORDER BY label ASC, type ASC, id DESC");
         echo json_encode($st->fetchAll(), JSON_UNESCAPED_UNICODE);
         exit;
     }
 
     if ($action === 'list') {
         requireAdmin();
-        $st = $conn->query("SELECT id,label,type,value,created_at,updated_at FROM admin_contacts ORDER BY id DESC");
+        $st = Database::$conn->query("SELECT id,label,type,value,created_at,updated_at FROM admin_contacts ORDER BY id DESC");
         echo json_encode($st->fetchAll(), JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -41,9 +45,9 @@ try {
             exit;
         }
 
-        $st = $conn->prepare("INSERT INTO admin_contacts(label,type,value,created_at) VALUES (?,?,?,NOW())");
+        $st = Database::$conn->prepare("INSERT INTO admin_contacts(label,type,value,created_at) VALUES (?,?,?,NOW())");
         $st->execute([$label, $type, $value]);
-        echo json_encode(['status' => 200, 'id' => $conn->lastInsertId()]);
+        echo json_encode(['status' => 200, 'id' => Database::$conn->lastInsertId()]);
         exit;
     }
 
@@ -62,7 +66,7 @@ try {
             exit;
         }
 
-        $st = $conn->prepare("UPDATE admin_contacts SET label=?, type=?, value=?, updated_at=NOW() WHERE id=?");
+        $st = Database::$conn->prepare("UPDATE admin_contacts SET label=?, type=?, value=?, updated_at=NOW() WHERE id=?");
         $st->execute([$label, $type, $value, $id]);
         echo json_encode(['status' => 200]);
         exit;
@@ -77,7 +81,7 @@ try {
         }
         $ids = array_values(array_filter(array_map('intval', $ids)));
         $in = implode(',', array_fill(0, count($ids), '?'));
-        $st = $conn->prepare("DELETE FROM admin_contacts WHERE id IN ($in)");
+        $st = Database::$conn->prepare("DELETE FROM admin_contacts WHERE id IN ($in)");
         $st->execute($ids);
         echo json_encode(['status' => 200, 'deleted' => $st->rowCount()]);
         exit;

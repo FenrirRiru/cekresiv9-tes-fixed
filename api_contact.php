@@ -1,5 +1,8 @@
 <?php
-require_once 'db.php';
+use App\Database;
+
+Database::init();
+
 session_start();
 header('Content-Type: application/json');
 
@@ -43,7 +46,7 @@ try {
     if ($subject === '' || $message === '') {
       jsonOut(["status" => 422, "message" => "Subjek dan pesan wajib diisi."]);
     }
-    $stmt = $conn->prepare("INSERT INTO contact_messages (user_id, subject, message, status) VALUES (?, ?, ?, 'open')");
+    $stmt = Database::$conn->prepare("INSERT INTO contact_messages (user_id, subject, message, status) VALUES (?, ?, ?, 'open')");
     $stmt->execute([$u['id'], $subject, $message]);
     jsonOut(["status" => 200, "message" => "Terkirim"]);
   }
@@ -54,7 +57,7 @@ try {
     if (!$u) {
       jsonOut(["status" => 401, "message" => "Unauthorized"]);
     }
-    $stmt = $conn->prepare("SELECT id, subject, message, status, reply_text, created_at, updated_at
+    $stmt = Database::$conn->prepare("SELECT id, subject, message, status, reply_text, created_at, updated_at
                             FROM contact_messages
                             WHERE user_id = ?
                             ORDER BY id DESC");
@@ -73,7 +76,7 @@ try {
     if (!$u || $u['role'] !== 'admin') {
       jsonOut(["status" => 401, "message" => "Unauthorized"]);
     }
-    $stmt = $conn->query("SELECT cm.*, u.name, u.email
+    $stmt = Database::$conn->query("SELECT cm.*, u.name, u.email
                           FROM contact_messages cm
                           LEFT JOIN users u ON u.id = cm.user_id
                           ORDER BY cm.id DESC");
@@ -93,7 +96,7 @@ try {
     if ($id <= 0 || $reply === '') {
       jsonOut(["status" => 422, "message" => "Data tidak valid"]);
     }
-    $stmt = $conn->prepare("UPDATE contact_messages SET reply_text = ?, status='replied', updated_at = CURRENT_TIMESTAMP WHERE id = ?");
+    $stmt = Database::$conn->prepare("UPDATE contact_messages SET reply_text = ?, status='replied', updated_at = CURRENT_TIMESTAMP WHERE id = ?");
     $stmt->execute([$reply, $id]);
     jsonOut(["status" => 200, "message" => "Tersimpan"]);
   }
@@ -108,7 +111,7 @@ try {
     if ($id <= 0) {
       jsonOut(["status" => 422, "message" => "ID tidak valid"]);
     }
-    $stmt = $conn->prepare("DELETE FROM contact_messages WHERE id = ?");
+    $stmt = Database::$conn->prepare("DELETE FROM contact_messages WHERE id = ?");
     $stmt->execute([$id]);
     jsonOut(["status" => 200, "message" => "Dihapus"]);
   }

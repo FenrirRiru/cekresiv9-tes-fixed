@@ -1,12 +1,17 @@
 <?php
-// api_auth.php
 declare(strict_types=1);
+
+// api_auth.php
+use App\Database;
+
+Database::init();
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 header('Content-Type: application/json; charset=utf-8');
 
-require_once 'db.php'; // harus menghasilkan $conn (PDO) + mode error exception
+// harus menghasilkan Database::Database::$conn (PDO) + mode error exception
 
 const PHP_INPUT_STREAM = 'php://input';
 
@@ -56,14 +61,14 @@ if ($action === 'signup') {
     }
 
     // cek duplikat
-    $st = $conn->prepare("SELECT id FROM users WHERE email=? LIMIT 1");
+    $st = Database::$conn->prepare("SELECT id FROM users WHERE email=? LIMIT 1");
     $st->execute([$email]);
     if ($st->fetch()) {
         err(409, 'Email sudah terdaftar.');
     }
 
     $hash = password_hash($password, PASSWORD_DEFAULT);
-    $ins = $conn->prepare("INSERT INTO users (name,email,password_hash,role) VALUES (?,?,?,'user')");
+    $ins = Database::$conn->prepare("INSERT INTO users (name,email,password_hash,role) VALUES (?,?,?,'user')");
     $ins->execute([$name, $email, $hash]);
 
     ok(['message' => 'Pendaftaran berhasil.']);
@@ -78,7 +83,7 @@ if ($action === 'login') {
     if ($email === '' || $password === '') {
         err(400, 'Email dan password wajib.');
     }
-    $st = $conn->prepare("SELECT * FROM users WHERE email=? LIMIT 1");
+    $st = Database::$conn->prepare("SELECT * FROM users WHERE email=? LIMIT 1");
     $st->execute([$email]);
     $row = $st->fetch();
     if (!$row || !password_verify($password, $row['password_hash'])) {
@@ -125,7 +130,7 @@ if ($action === 'update_profile') {
     }
 
     // ambil user
-    $st = $conn->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
+    $st = Database::$conn->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
     $st->execute([$uid]);
     $user = $st->fetch();
     if (!$user) {
@@ -139,7 +144,7 @@ if ($action === 'update_profile') {
 
     // jika email diganti cek unik
     if ($email !== strtolower($user['email'])) {
-        $chk = $conn->prepare("SELECT id FROM users WHERE email=? AND id<>? LIMIT 1");
+        $chk = Database::$conn->prepare("SELECT id FROM users WHERE email=? AND id<>? LIMIT 1");
         $chk->execute([$email, $uid]);
         if ($chk->fetch()) {
             err(409, 'Email sudah digunakan.');
@@ -160,11 +165,11 @@ if ($action === 'update_profile') {
     $sql .= " WHERE id=?";
     $params[] = $uid;
 
-    $up = $conn->prepare($sql);
+    $up = Database::$conn->prepare($sql);
     $up->execute($params);
 
     // refresh sesi
-    $st = $conn->prepare("SELECT * FROM users WHERE id=?");
+    $st = Database::$conn->prepare("SELECT * FROM users WHERE id=?");
     $st->execute([$uid]);
     $_SESSION['user'] = getUserSafe($st->fetch());
 
@@ -185,7 +190,7 @@ if ($action === 'delete_account') {
     }
 
     // ambil user
-    $st = $conn->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
+    $st = Database::$conn->prepare("SELECT * FROM users WHERE id=? LIMIT 1");
     $st->execute([$uid]);
     $user = $st->fetch();
     if (!$user) {
@@ -199,22 +204,22 @@ if ($action === 'delete_account') {
 
     // hapus data terkait (opsional, sesuaikan nama tabel)
     try {
-        $conn->beginTransaction();
+        Database::$conn->beginTransaction();
         // hapus riwayat cek resi
-        $del1 = $conn->prepare("DELETE FROM cekresi WHERE user_id=?");
+        $del1 = Database::$conn->prepare("DELETE FROM cekresi WHERE user_id=?");
         $del1->execute([$uid]);
         // hapus pesan kontak
-        if ($conn->query("SHOW TABLES LIKE 'contact_messages'")->rowCount() > 0) {
-            $del2 = $conn->prepare("DELETE FROM contact_messages WHERE user_id=?");
+        if (Database::$conn->query("SHOW TABLES LIKE 'contact_messages'")->rowCount() > 0) {
+            $del2 = Database::$conn->prepare("DELETE FROM contact_messages WHERE user_id=?");
             $del2->execute([$uid]);
         }
         // hapus user
-        $delU = $conn->prepare("DELETE FROM users WHERE id=?");
+        $delU = Database::$conn->prepare("DELETE FROM users WHERE id=?");
         $delU->execute([$uid]);
-        $conn->commit();
+        Database::$conn->commit();
     } catch (Throwable $e) {
-        if ($conn->inTransaction()) {
-            $conn->rollBack();
+        if (Database::$conn->inTransaction()) {
+            Database::$conn->rollBack();
         }
         err(500, 'Gagal menghapus akun: ' . $e->getMessage());
     }

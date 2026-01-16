@@ -168,7 +168,7 @@
             const url = value.startsWith('http') ? value : `https://${value}`;
             valueHtml = `<a href="${url}" target="_blank" rel="noopener">${value}</a>`;
           } else if (type === 'phone' && value) {
-            valueHtml = `<a href="tel:${value.replace(/\s+/g, '')}">${value}</a>`;
+            valueHtml = `<a href="tel:${value.replaceAll(/\s+/, '')}">${value}</a>`;
           } else if (type === 'email' && value) {
             valueHtml = `<a href="mailto:${value}">${value}</a>`;
           }

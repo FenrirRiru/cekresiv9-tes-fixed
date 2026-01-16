@@ -12,32 +12,26 @@
 # Font & Color Variables
 # Help: https://bootstrapmade.com/color-system/
 --------------------------------------------------------------*/
-/* Fonts */
+/* Fonts and Variables */
 :root {
   --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --heading-font: "Raleway", sans-serif;
   --nav-font: "Raleway", sans-serif;
-}
 
-/* Global Colors */
-:root {
+  /* Global Colors */
   --background-color: #040000;
   --default-color: #f8f8f8;
   --heading-color: #ffffff;
   --accent-color: #e59d02;
   --surface-color: #191919;
   --contrast-color: #ffffff;
-}
 
-/* Nav Menu Colors */
-:root {
+  /* Nav Menu Colors */
   --nav-color: #f8f8f8;
   --nav-hover-color: #e59d02;
   --nav-mobile-background-color: #1b1a1a;
-}
 
-/* Smooth scroll */
-:root {
+  /* Smooth scroll */
   scroll-behavior: smooth;
 }
 
@@ -75,7 +69,7 @@ h6 {
 .formresi .sent-message {
   display: none;
   color: #ffffff;
-  background: #059652;
+  background: #28a745;
   text-align: center;
   padding: 15px;
   margin-bottom: 24px;

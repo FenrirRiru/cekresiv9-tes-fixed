@@ -7,7 +7,9 @@ class Database
 
     public static function init()
     {
-        if (self::$conn) return;
+        if (self::$conn) {
+            return;
+        }
 
         // Load .env (simple loader)
         $envFile = __DIR__ . '/.env';
@@ -27,16 +29,16 @@ class Database
         $pass = getenv('secret');
 
         try {
-            self::$conn = new PDO(
+            self::$conn = new \PDO(
                 "mysql:host=$host;dbname=$db;charset=utf8mb4",
                 $user,
                 $pass,
                 [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                    \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
                 ]
             );
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             die(json_encode(["status" => 500, "message" => "DB connect fail: " . $e->getMessage()]));
         }
     }
